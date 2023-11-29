@@ -4,13 +4,18 @@ import {
   Links,
   LiveReload,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
 
+import root from "./styles/root.css";
+
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  ...(cssBundleHref
+    ? [{ rel: "stylesheet", href: cssBundleHref }]
+    : [{ rel: "stylesheet", href: root }]),
 ];
 
 export default function App() {
@@ -23,6 +28,12 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <h1>Maloya Jazz Xperianz</h1>
+        <nav>
+          <NavLink to="" prefetch="intent">
+            Home
+          </NavLink>
+        </nav>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
