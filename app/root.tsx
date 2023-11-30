@@ -36,6 +36,9 @@ export default function App() {
           <NavLink to="blog" prefetch="intent">
             Blog
           </NavLink>
+          <NavLink to="profil" prefetch="intent">
+            Profil
+          </NavLink>
         </nav>
         <Outlet />
         <ScrollRestoration />
