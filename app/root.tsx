@@ -42,6 +42,9 @@ export default function App() {
           <NavLink to="upload" prefetch="intent">
             Upload
           </NavLink>
+          <NavLink to="contact" prefetch="intent">
+            Contact
+          </NavLink>
         </nav>
         <Outlet />
         <ScrollRestoration />
