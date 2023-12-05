@@ -1,10 +1,12 @@
-import { useFetcher } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 
+import { loader } from "./loader";
 import { action } from "./action";
+export { loader, action };
 import GoogleSign from "~/components/googleSign";
-export { action };
 
 export default function Signin() {
+  const { clientId } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
   let isIdle = fetcher.state === "idle";
   //let isSumitting = fetcher.state === "submitting";
@@ -23,7 +25,7 @@ export default function Signin() {
         <span style={{ color: "red" }}>{fetcher.data.error}</span>
       ) : null}
       <div>or</div>
-      <GoogleSign />
+      <GoogleSign clientId={clientId} />
     </section>
   );
 }

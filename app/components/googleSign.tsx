@@ -6,7 +6,7 @@ declare global {
     handleCreds: (response: any) => void;
   }
 }
-export default function GoogleSign() {
+export default function GoogleSign({ clientId }: { clientId: string }) {
   const fetcher = useFetcher();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function GoogleSign() {
     <>
       <div
         id="g_id_onload"
-        data-client_id="508679869541-qjfvd89c5el4dsr8kepj8elog7p3eac2.apps.googleusercontent.com"
+        data-client_id={clientId}
         data-callback="handleCreds"
         data-auto_prompt="false"
       ></div>
