@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node";
+//import { redirect } from "@remix-run/node";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { userSession } from "../session.server";
 import { getRefreshToken } from "./getRefreshToken";
@@ -15,7 +15,8 @@ export const auth = async (request: Request): Promise<authType> => {
   const user = await userSession.getSession(request.headers.get("Cookie"));
   const accessToken = user.get("accessToken");
 
-  if (!accessToken) throw await REDIRECT(user);
+  //if (!accessToken) throw await REDIRECT(user);
+  if (!accessToken) return await REDIRECT(user);
 
   const verifiedAccess = verifyToken(
     accessToken,
@@ -28,20 +29,25 @@ export const auth = async (request: Request): Promise<authType> => {
       process.env.REFRESH_SECRET as string
     );
 
-    if (!verifiedRefresh) throw await REDIRECT(user);
+    //if (!verifiedRefresh) throw await REDIRECT(user);
+    if (!verifiedRefresh) return await REDIRECT(user);
 
     const matchToken = await getRefreshToken(
       verifiedRefresh.id,
       user.get("refreshToken")
     );
 
-    if (!matchToken) throw await REDIRECT(user);
+    //if (!matchToken) throw await REDIRECT(user);
+    if (!matchToken) return await REDIRECT(user);
+
     const verifiedMatch: any = verifyToken(
       matchToken,
       process.env.REFRESH_SECRET as string
     );
 
-    if (!verifiedMatch) throw await REDIRECT(user);
+    //if (!verifiedMatch) throw await REDIRECT(user);
+    if (!verifiedMatch) return await REDIRECT(user);
+
     const { id, email, firstname, avatar } = verifiedMatch;
 
     const newAccessToken = jwt.sign(
@@ -74,12 +80,23 @@ export const auth = async (request: Request): Promise<authType> => {
   };
 };
 
+// const REDIRECT = async (user: any) => {
+//   return redirect("/signin", {
+//     headers: {
+//       "Set-Cookie": await userSession.destroySession(user),
+//     },
+//   });
+// };
 const REDIRECT = async (user: any) => {
-  return redirect("/signin", {
+  return {
+    id: "",
+    email: "",
+    firstname: "",
+    avatar: "",
     headers: {
       "Set-Cookie": await userSession.destroySession(user),
     },
-  });
+  };
 };
 
 const verifyToken = (token: string, secret: string): JwtPayload | null => {
