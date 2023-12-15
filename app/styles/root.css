@@ -4,19 +4,31 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1rem;
 }
+button {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  margin: 1px;
+}
 .grecaptcha-badge {
   visibility: hidden;
 }
 
 h1 {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-transform: uppercase;
+  text-shadow: 3px 4px 8px rgba(114, 114, 114, 0.4);
 }
 h2 {
-  font-size: 1.2rem;
-  text-transform: uppercase;
+  font-size: 1.6rem;
 }
-nav {
+h3 {
+  font-size: 1.4rem;
+}
+h4 {
+  font-size: 1.2rem;
+}
+nav.navbar {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -29,7 +41,6 @@ a {
   text-decoration: none;
   font-weight: bold;
   color: #323232;
-  text-transform: uppercase;
 }
 a:hover {
   opacity: 0.8;
