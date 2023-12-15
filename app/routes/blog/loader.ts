@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return prisma.post.findMany({
       where: id ? { type: "post" } : { type: "post", published: true },
       orderBy: {
-        updatedAt: "desc",
+        createdAt: "desc",
       },
       select: {
         title: true,
