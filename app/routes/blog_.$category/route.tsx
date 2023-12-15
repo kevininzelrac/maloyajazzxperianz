@@ -31,10 +31,10 @@ export default function Blog() {
                       backgroundImage: "url(" + bkgrd(content) + ")",
                     }}
                   >
-                    <Link to={category + "/" + title}>
+                    <Link to={title}>
                       <h3>{title}</h3>
                     </Link>
-                    <Link to={category}>{category}</Link> écrit le{" "}
+                    <b>{category}</b> écrit le{" "}
                     <time>{new Date(createdAt).toLocaleDateString("fr")}</time>
                     <div className="badge">
                       <img src={author?.avatar} width={30} height={30} />
