@@ -2,7 +2,8 @@ import { NavLink, Outlet } from "@remix-run/react";
 import { LinksFunction } from "@remix-run/node";
 
 import { loader } from "./loader";
-export { loader };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, ErrorBoundary };
 
 import styles from "./styles.css";
 export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];

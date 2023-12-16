@@ -3,7 +3,8 @@ import { type MetaFunction } from "@remix-run/node";
 
 import { action } from "./action";
 import { loader } from "./loader";
-export { loader, action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, action, ErrorBoundary };
 
 export const meta: MetaFunction = () => {
   return [

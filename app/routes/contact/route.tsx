@@ -3,7 +3,8 @@ import ReCaptchaEnterprise from "~/components/reCaptchaEntreprise";
 
 import { loader } from "./loader";
 import { action } from "./action";
-export { loader, action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, action, ErrorBoundary };
 
 import styles from "./styles.css";
 import { LinksFunction } from "@remix-run/node";
@@ -67,24 +68,5 @@ export default function Contact() {
       </fetcher.Form>
       {/* {fetcher.data ? <pre>{JSON.stringify(fetcher.data, null, 3)}</pre> : null} */}
     </main>
-  );
-}
-
-import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  //console.error(error);
-  return (
-    <div className="error" style={{ color: "crimson" }}>
-      <h2>Oops!</h2>
-      <p>
-        {isRouteErrorResponse(error)
-          ? `${error.status} ${error.statusText}`
-          : error instanceof Error
-          ? error.message
-          : "Unknown Error"}
-      </p>
-    </div>
   );
 }

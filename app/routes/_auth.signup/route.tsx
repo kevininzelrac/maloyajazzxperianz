@@ -3,7 +3,8 @@ import { SetStateAction, useState } from "react";
 import { Form } from "@remix-run/react";
 
 import { action } from "./action";
-export { action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { action, ErrorBoundary };
 
 export const meta: MetaFunction = () => {
   return [{ title: "Sign Up" }, { name: "description", content: "Sign Up" }];

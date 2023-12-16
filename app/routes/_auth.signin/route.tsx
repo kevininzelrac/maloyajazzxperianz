@@ -2,7 +2,9 @@ import { useFetcher, useLoaderData } from "@remix-run/react";
 
 import { loader } from "./loader";
 import { action } from "./action";
-export { loader, action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, action, ErrorBoundary };
+
 import GoogleSign from "~/components/googleSign";
 
 export default function Signin() {

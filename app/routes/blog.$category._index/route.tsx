@@ -2,7 +2,10 @@ import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
 
 import { loader } from "./loader";
-export { loader };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, ErrorBoundary };
+
+import ErrorElement from "~/components/errorElement";
 
 import { Article } from "~/components/article";
 
@@ -11,14 +14,7 @@ export default function Blog() {
 
   return (
     <Suspense fallback={<div>Loading</div>}>
-      <Await
-        resolve={response}
-        errorElement={
-          <div style={{ color: "red" }}>
-            Woops ! something weird just happened
-          </div>
-        }
-      >
+      <Await resolve={response} errorElement={<ErrorElement />}>
         {(posts) => (
           <section>
             {posts.map((post) => (

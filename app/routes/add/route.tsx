@@ -3,7 +3,8 @@ import { useState } from "react";
 
 import { loader } from "./loader";
 import { action } from "./action";
-export { loader, action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, action, ErrorBoundary };
 
 import Editor from "~/components/slate/editor";
 import ClientOnly from "~/utils/clientOnly";

@@ -1,6 +1,8 @@
-import { loader } from "./loader";
 import { Link, useLoaderData } from "@remix-run/react";
-export { loader };
+
+import { loader } from "./loader";
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, ErrorBoundary };
 
 export default function Profil() {
   const { firstname, email, avatar } = useLoaderData<typeof loader>();
