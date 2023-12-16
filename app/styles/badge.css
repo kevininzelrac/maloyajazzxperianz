@@ -1,0 +1,23 @@
+div.badge {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* margin: 0.6em; */
+}
+
+div.badge > img {
+  width: 40px;
+  height: auto;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+div.badge > span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}

@@ -7,7 +7,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const page = await prisma.post.findFirst({
     where: {
-      //type: "page",
+      type: "page",
       title: params.page,
     },
   });

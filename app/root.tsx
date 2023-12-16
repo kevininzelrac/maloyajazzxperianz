@@ -19,6 +19,7 @@ import { IconContext } from "react-icons";
 import root from "./styles/root.css";
 import slate from "./styles/slate.css";
 import dialog from "./styles/dialog.css";
+import badge from "./styles/badge.css";
 import { auth } from "./services/auth/index.server";
 
 export const links: LinksFunction = () => [
@@ -28,6 +29,7 @@ export const links: LinksFunction = () => [
         { rel: "stylesheet", href: root },
         { rel: "stylesheet", href: slate },
         { rel: "stylesheet", href: dialog },
+        { rel: "stylesheet", href: badge },
       ]),
 ];
 
