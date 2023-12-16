@@ -11,6 +11,22 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       category: params.category,
       title: params.post,
     },
+    select: {
+      id: true,
+      type: true,
+      title: true,
+      content: true,
+      category: true,
+      createdAt: true,
+      authorId: true,
+      author: {
+        select: {
+          firstname: true,
+          lastname: true,
+          avatar: true,
+        },
+      },
+    },
   });
   return json({ post, id }, { headers });
 };

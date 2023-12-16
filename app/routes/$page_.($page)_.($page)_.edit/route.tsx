@@ -73,7 +73,8 @@ export default function Index() {
           <>
             {/* Exit Button */}
             <button
-              onClick={() => navigate(path.replace(page!.category, category))}
+              //onClick={() => navigate(path.replace(page!.category, category))}
+              onClick={() => navigate(path)}
               style={{ color: "#336699" }}
             >
               <MdOutlineKeyboardBackspace />
