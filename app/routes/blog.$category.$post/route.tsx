@@ -7,7 +7,8 @@ import {
 import type { MetaFunction } from "@remix-run/node";
 
 import { loader } from "./loader";
-export { loader };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, ErrorBoundary };
 
 import ReadOnly from "~/components/slate/readOnly";
 import { useState } from "react";

@@ -1,7 +1,8 @@
 import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { loader } from "./loader";
-export { loader };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, ErrorBoundary };
 
 import styles from "./styles.css";
 import { LinksFunction } from "@remix-run/node";

@@ -12,7 +12,8 @@ import ReadOnly from "~/components/slate/readOnly";
 
 import { loader } from "./loader";
 import { action } from "./action";
-export { loader, action };
+import ErrorBoundary from "~/components/errorBoundary";
+export { loader, action, ErrorBoundary };
 
 import type { MetaFunction } from "@remix-run/node";
 export const meta: MetaFunction = () => {
