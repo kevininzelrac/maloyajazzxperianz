@@ -8,7 +8,6 @@ import {
   Links,
   LiveReload,
   Meta,
-  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -16,11 +15,17 @@ import {
 } from "@remix-run/react";
 
 import { IconContext } from "react-icons";
+import { auth } from "./services/auth/index.server";
+import { Post } from "@prisma/client";
+import { prisma } from "./services/prisma.server";
+import Nav from "./components/nav";
+
 import root from "./styles/root.css";
 import slate from "./styles/slate.css";
 import dialog from "./styles/dialog.css";
 import badge from "./styles/badge.css";
-import { auth } from "./services/auth/index.server";
+import nav from "./styles/nav.css";
+import article from "./styles/article.css";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref
@@ -30,17 +35,42 @@ export const links: LinksFunction = () => [
         { rel: "stylesheet", href: slate },
         { rel: "stylesheet", href: dialog },
         { rel: "stylesheet", href: badge },
+        { rel: "stylesheet", href: nav },
+        { rel: "stylesheet", href: article },
       ]),
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  return json({ id }, { headers });
+  const nav = await prisma.post.findMany({
+    where: {
+      NOT: { OR: [{ type: "post" }, { category: "post" }] },
+      published: id ? {} : true,
+    },
+    select: {
+      title: true,
+      type: true,
+      category: true,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const recursive = (data: any, parent: string) =>
+    data
+      .filter(({ category }: any) => category === parent)
+      .map(({ title, type, category }: Post) => ({
+        title,
+        type,
+        category,
+        children: recursive(data, title),
+      }));
+
+  return json({ id, nav: recursive(nav, "page") }, { headers });
 };
 
 export default function App() {
-  const { id } = useLoaderData<typeof loader>();
+  const { id, nav } = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -52,34 +82,9 @@ export default function App() {
       </head>
       <body>
         <h1>Maloya Jazz Xperianz</h1>
-        <nav className="navbar">
-          <NavLink to="/" prefetch="intent">
-            HOME
-          </NavLink>
-          <NavLink to="blog" prefetch="intent">
-            BLOG
-          </NavLink>
-          <NavLink to="contact" prefetch="intent">
-            CONTACT
-          </NavLink>
-          {id ? (
-            <>
-              <NavLink to="upload" prefetch="intent">
-                UPLOAD
-              </NavLink>
-              <NavLink to="profil" prefetch="intent">
-                PROFIL
-              </NavLink>
-              <NavLink to="add" prefetch="intent">
-                +
-              </NavLink>
-            </>
-          ) : (
-            <NavLink to="signin" prefetch="intent">
-              SIGN IN
-            </NavLink>
-          )}
-        </nav>
+
+        <Nav data={nav} id={id} />
+
         <IconContext.Provider
           value={{
             className: "react-icons",

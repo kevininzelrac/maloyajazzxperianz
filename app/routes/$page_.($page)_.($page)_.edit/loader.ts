@@ -11,7 +11,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const page = await prisma.post.findFirst({
     where: {
-      //type: "page",
       title: params.page,
     },
   });
@@ -37,5 +36,18 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       categories.push(item);
     }
   });
+
+  if (!page)
+    throw json(null, {
+      status: 404,
+      statusText: "Not Found",
+    });
+
+  if (id !== page?.authorId)
+    throw json(null, {
+      status: 403,
+      statusText: "Forbidden",
+    });
+
   return json({ id, page, categories }, { headers });
 };

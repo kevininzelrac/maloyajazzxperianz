@@ -10,6 +10,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       type: "post",
       category: params.category,
       title: params.post,
+      //published: id ? {} : true,
     },
     select: {
       id: true,
@@ -18,6 +19,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       content: true,
       category: true,
       createdAt: true,
+      published: true,
       authorId: true,
       author: {
         select: {
@@ -28,5 +30,17 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     },
   });
+  if (!post) {
+    throw json(null, {
+      status: 404,
+      statusText: "Post Not Found",
+    });
+  }
+  if (!id && post!.published === false) {
+    throw json(null, {
+      status: 403,
+      statusText: "Forbidden",
+    });
+  }
   return json({ post, id }, { headers });
 };

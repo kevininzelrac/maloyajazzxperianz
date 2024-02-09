@@ -1,9 +1,4 @@
-import {
-  useFetcher,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import { useLoaderData, useLocation } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 
 import { loader } from "./loader";
@@ -11,52 +6,48 @@ import ErrorBoundary from "~/components/errorBoundary";
 export { loader, ErrorBoundary };
 
 import ReadOnly from "~/components/slate/readOnly";
-import { useState } from "react";
-import Dialog from "~/components/dialog";
 
-export const meta: MetaFunction = () => [
-  { title: "Home" },
-  { name: "description", content: "Home" },
+export const meta: MetaFunction = ({ params }) => [
+  { title: params.page },
+  { name: "description", content: params.page },
 ];
 
-import { BiSolidEditAlt } from "react-icons/bi";
+import Delete from "~/components/delete";
+import Edit from "~/components/edit";
+import Published from "~/components/published";
 
 export default function Index() {
   const { id, page } = useLoaderData<typeof loader>();
-  const fetcher = useFetcher();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const path = pathname.replace("/Edit", "");
-  const [display, setDisplay] = useState(false);
 
-  const ConfirmDelete = () => {
-    const handleDelete = () => {
-      fetcher.submit(
-        { id: page!.id, type: page!.type },
-        { method: "POST", action: "/api/delete" }
-      );
-      localStorage.removeItem("slate" + path);
-    };
-    return <button onClick={handleDelete}>confirm Delete</button>;
-  };
   return (
-    <main>
-      {display ? (
-        <Dialog handleClose={() => setDisplay(false)}>
-          <ConfirmDelete />
-        </Dialog>
-      ) : null}
-      <section className="slate">
-        {id === page!.authorId ? (
-          <>
-            <button onClick={() => navigate("Edit")}>
-              <BiSolidEditAlt />
-            </button>
-            <button onClick={() => setDisplay(true)}>Delete</button>
-          </>
+    <section key={pathname} className="slate">
+      <header>
+        <div className="title">
+          <h3>{page!.title}</h3>
+          {id === page!.authorId ? (
+            <span>
+              <Published published={page!.published!} />
+              <Edit to={pathname} />
+              <Delete id={page!.id} type={page!.type} />
+            </span>
+          ) : null}
+        </div>
+        {id ? (
+          <div className="metadata">
+            <b>{page!.category}</b>
+            {"  "}
+            <time>
+              <i>
+                écrit le {new Date(page!.createdAt!).toLocaleDateString("fr")}
+              </i>
+            </time>
+          </div>
         ) : null}
-        <ReadOnly>{page!.content}</ReadOnly>
-      </section>
-    </main>
+      </header>
+      <article>
+        <ReadOnly>{page?.content}</ReadOnly>
+      </article>
+    </section>
   );
 }

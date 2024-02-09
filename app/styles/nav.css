@@ -1,0 +1,40 @@
+nav.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: fit-content;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  gap: 10px;
+  list-style: none;
+  background-color: white;
+}
+
+nav.navbar > div > div {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  background-color: white;
+}
+
+nav.navbar div:hover > div {
+  display: flex;
+}
+
+nav a,
+nav div > label,
+nav div > a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-decoration: none;
+  font-weight: bold;
+  color: #323232;
+  text-transform: uppercase;
+  width: 80px;
+  height: fit-content;
+}

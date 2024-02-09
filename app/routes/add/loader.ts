@@ -10,23 +10,32 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     });
 
   const categories = await prisma.post.findMany({
+    where: {
+      type: "category",
+    },
     select: {
       category: true,
-      type: true,
+      title: true,
     },
-    distinct: ["category"],
+    distinct: ["title"],
     orderBy: {
-      category: "asc",
+      title: "asc",
     },
   });
 
   const defaults = [
-    { category: "page", type: "category" },
-    { category: "post", type: "category" },
+    { category: "category", title: "post" },
+    { category: "category", title: "page" },
+    { category: "page", title: "page" },
   ];
 
   defaults.forEach((item) => {
-    if (!categories.some(({ category }) => category === item.category)) {
+    if (
+      !categories.some(
+        ({ title, category }) =>
+          title === item.title && category === item.category
+      )
+    ) {
       categories.push(item);
     }
   });

@@ -2,43 +2,30 @@ import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import { auth } from "~/services/auth/index.server";
 import { prisma } from "~/services/prisma.server";
 
-type Posts = {
-  title: string;
-  content: string;
-  category: string;
-  createdAt: Date;
-  author: {
-    firstname: string;
-    lastname: string;
-    avatar: string;
-  };
-}[];
-
 export const config = { runtime: "edge" };
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  const getPostsByCategory = async (): Promise<Posts> => {
-    return prisma.post.findMany({
-      where: id
-        ? {
-            type: "post",
-            category: params.category,
-          }
-        : {
-            type: "post",
-            category: params.category,
-            published: true,
-          },
+  const response = Promise.resolve().then(() =>
+    prisma.post.findMany({
+      where: {
+        type: "post",
+        category: params.category,
+        published: id ? {} : true,
+      },
       orderBy: {
         createdAt: "desc",
       },
       select: {
+        id: true,
+        type: true,
+        category: true,
         title: true,
         content: true,
-        category: true,
         createdAt: true,
+        published: true,
+        authorId: true,
         author: {
           select: {
             firstname: true,
@@ -47,8 +34,41 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
           },
         },
       },
-    });
-  };
+    })
+  );
 
-  return defer({ response: getPostsByCategory() }, { headers });
+  return defer({ id, response }, { headers });
 };
+
+// const getPostsByCategory = async (): Promise<PostWithAuthor[]> => {
+//   return prisma.post.findMany({
+//     where: id
+//       ? {
+//           type: "post",
+//           category: params.category,
+//         }
+//       : {
+//           type: "post",
+//           category: params.category,
+//           published: true,
+//         },
+//     orderBy: {
+//       createdAt: "desc",
+//     },
+//     select: {
+//       title: true,
+//       category: true,
+//       content: true,
+//       createdAt: true,
+//       published: true,
+//       authorId: true,
+//       author: {
+//         select: {
+//           firstname: true,
+//           lastname: true,
+//           avatar: true,
+//         },
+//       },
+//     },
+//   });
+// };

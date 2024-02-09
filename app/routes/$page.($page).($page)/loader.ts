@@ -7,9 +7,17 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 
   const page = await prisma.post.findFirst({
     where: {
-      type: "page",
       title: params.page,
+      type: id ? {} : "page",
     },
   });
+
+  if (!page) {
+    throw json(null, {
+      status: 404,
+      statusText: "Page Not Found",
+    });
+  }
+
   return json({ page, id }, { headers });
 };

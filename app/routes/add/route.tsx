@@ -11,19 +11,33 @@ import ClientOnly from "~/utils/clientOnly";
 import { IoSaveSharp } from "react-icons/io5";
 
 import type { MetaFunction } from "@remix-run/node";
-export const meta: MetaFunction = () => {
-  return [{ title: "Home" }, { name: "description", content: "Home" }];
-};
+import Back from "~/components/back";
+export const meta: MetaFunction = () => [
+  { title: "Add" },
+  { name: "description", content: "Add" },
+];
 
 export default function Index() {
   const { id, categories } = useLoaderData<typeof loader>();
   const fetcher = useFetcher<typeof action>();
   const { pathname } = useLocation();
   const path = pathname.replace("/Edit", "");
+  const [isDraft, setIsDraft] = useState(false);
   const [title, setTitle] = useState("");
   const [type, setType] = useState("post");
-  const [category, setCategory] = useState(categories[0].category);
-  const [isDraft, setIsDraft] = useState(false);
+  const [category, setCategory] = useState(categories[0].title);
+
+  const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setType(e.target.value);
+    const cat = categories.filter(
+      (item: any) => item.category === e.target.value
+    )[0];
+    if (!cat) {
+      setCategory("");
+      return;
+    }
+    setCategory(cat.title);
+  };
 
   const handleSave = async () => {
     fetcher.submit(
@@ -42,6 +56,7 @@ export default function Index() {
 
   return (
     <main>
+      <Back />
       <section className="slate">
         <input
           type="text"
@@ -49,17 +64,17 @@ export default function Index() {
           placeholder="title"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <select value={type} onChange={handleType}>
           <option value="page">page</option>
           <option value="post">post</option>
           <option value="category">category</option>
         </select>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           {categories
-            .filter((item: any) => item.type === type)
-            .map(({ category }) => (
-              <option key={category} value={category}>
-                {category}
+            .filter((item: any) => item.category === type)
+            .map(({ title }) => (
+              <option key={title} value={title}>
+                {title}
               </option>
             ))}
         </select>
