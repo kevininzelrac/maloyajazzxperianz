@@ -1,4 +1,10 @@
+import { MetaFunction } from "@remix-run/node";
 import { FaBeer } from "react-icons/fa";
+
+export const meta: MetaFunction = () => [
+  { title: "Home" },
+  { name: "description", content: "Home" },
+];
 
 export default function Index() {
   return (

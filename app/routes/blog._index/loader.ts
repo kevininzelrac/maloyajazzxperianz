@@ -2,35 +2,23 @@ import { LoaderFunctionArgs, defer } from "@remix-run/node";
 import { auth } from "~/services/auth/index.server";
 import { prisma } from "~/services/prisma.server";
 
-type Posts = {
-  title: string;
-  content: string;
-  category: string;
-  createdAt: Date;
-  author: {
-    firstname: string;
-    lastname: string;
-    avatar: string;
-  };
-}[];
-
 export const config = { runtime: "edge" };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  const getPosts = async (): Promise<Posts> => {
-    //await new Promise<void>((resolve) => setTimeout(resolve, 1000));
-    return prisma.post.findMany({
+  const response = Promise.resolve().then(() =>
+    prisma.post.findMany({
       where: id ? { type: "post" } : { type: "post", published: true },
-      orderBy: {
-        createdAt: "desc",
-      },
       select: {
+        id: true,
+        type: true,
+        category: true,
         title: true,
         content: true,
-        category: true,
         createdAt: true,
+        published: true,
+        authorId: true,
         author: {
           select: {
             firstname: true,
@@ -39,8 +27,37 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           },
         },
       },
-    });
-  };
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  );
 
-  return defer({ response: getPosts() }, { headers });
+  return defer({ id, response }, { headers });
 };
+
+/* const getPosts = async (): Promise<PostWithAuthor[]> => {
+  //await new Promise<void>((resolve) => setTimeout(resolve, 1000));
+  return prisma.post.findMany({
+    where: id ? { type: "post" } : { type: "post", published: true },
+    select: {
+      type: true,
+      title: true,
+      content: true,
+      category: true,
+      createdAt: true,
+      published: true,
+      authorId: true,
+      author: {
+        select: {
+          firstname: true,
+          lastname: true,
+          avatar: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}; */

@@ -1,19 +1,23 @@
-import { json } from "@remix-run/node";
+import { LoaderFunctionArgs, json } from "@remix-run/node";
+import { auth } from "~/services/auth/index.server";
 import { prisma } from "~/services/prisma.server";
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { id, headers } = await auth(request);
   const categories = await prisma.post.findMany({
     where: {
-      type: "post",
+      type: "category",
+      category: "post",
     },
     select: {
-      category: true,
-      type: true,
+      id: true,
+      title: true,
     },
-    distinct: ["category"],
+    distinct: ["title"],
     orderBy: {
-      category: "asc",
+      title: "asc",
     },
   });
-  return json({ categories });
+
+  return json({ id, categories }, { headers });
 };

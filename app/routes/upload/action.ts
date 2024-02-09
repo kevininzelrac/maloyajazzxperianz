@@ -8,5 +8,11 @@ export let action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
   const file = form.get("file") as File;
   const { url } = await put(file.name, file, { access: "public" });
 
+  if (!url) {
+    throw json(null, {
+      status: 500,
+      statusText: "Internal Server Error",
+    });
+  }
   return json({ url });
 };

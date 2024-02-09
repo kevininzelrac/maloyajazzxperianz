@@ -1,4 +1,5 @@
 import { useFetcher, useLoaderData } from "@remix-run/react";
+import { LinksFunction, MetaFunction } from "@remix-run/node";
 import ReCaptchaEnterprise from "~/components/reCaptchaEntreprise";
 
 import { loader } from "./loader";
@@ -7,9 +8,13 @@ import ErrorBoundary from "~/components/errorBoundary";
 export { loader, action, ErrorBoundary };
 
 import styles from "./styles.css";
-import { LinksFunction } from "@remix-run/node";
 import { useEffect, useRef, useState } from "react";
 export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+
+export const meta: MetaFunction = () => [
+  { title: "Contact" },
+  { name: "description", content: "Contact" },
+];
 
 export default function Contact() {
   const { siteKey } = useLoaderData<typeof loader>();

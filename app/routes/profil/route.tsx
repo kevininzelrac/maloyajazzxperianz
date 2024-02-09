@@ -1,8 +1,13 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, MetaFunction, useLoaderData } from "@remix-run/react";
 
 import { loader } from "./loader";
 import ErrorBoundary from "~/components/errorBoundary";
 export { loader, ErrorBoundary };
+
+export const meta: MetaFunction = () => [
+  { title: "Profil" },
+  { name: "description", content: "Profil" },
+];
 
 export default function Profil() {
   const { firstname, email, avatar } = useLoaderData<typeof loader>();

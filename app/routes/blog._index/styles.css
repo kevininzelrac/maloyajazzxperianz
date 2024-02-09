@@ -1,0 +1,13 @@
+section {
+  width: 80%;
+  margin-bottom: 15px;
+  border: 1px solid gainsboro;
+}
+section > header {
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+section > article {
+  height: 100px;
+  overflow: hidden;
+}
