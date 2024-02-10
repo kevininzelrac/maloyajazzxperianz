@@ -47,7 +47,7 @@
     "node": ">=18.0.0"
   },
   "prisma": {
-    "schema": "app/prisma/schema.prisma",
-    "seed": "ts-node --esm app/prisma/seed.ts"
+    "schema": "prisma/schema.prisma",
+    "seed": "ts-node --esm prisma/seed.ts"
   }
 }
