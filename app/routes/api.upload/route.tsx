@@ -1,2 +1,2 @@
-import { action } from "./action";
+import action from "./action";
 export { action };
