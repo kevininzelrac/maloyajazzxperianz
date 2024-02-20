@@ -1,6 +1,6 @@
 import { useFetcher } from "@remix-run/react";
-import { loader } from "./loader";
-import { action } from "./action";
+import loader from "./loader";
+import action from "./action";
 export { loader, action };
 
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
