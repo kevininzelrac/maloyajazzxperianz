@@ -1,17 +1,21 @@
 import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { useState } from "react";
-
-import { loader } from "./loader";
-import { action } from "./action";
+import { IoSaveSharp } from "react-icons/io5";
+import loader from "./loader";
+import action from "./action";
+import ClientOnly from "~/utils/clientOnly";
 import ErrorBoundary from "~/components/errorBoundary";
+import Editor, { links as slateLinks } from "~/components/slate/editor";
+import styles from "./styles.css";
+
 export { loader, action, ErrorBoundary };
 
-import Editor from "~/components/slate/editor";
-import ClientOnly from "~/utils/clientOnly";
-import { IoSaveSharp } from "react-icons/io5";
+export const links: LinksFunction = () => [
+  ...slateLinks(),
+  { rel: "stylesheet", href: styles },
+];
 
-import type { MetaFunction } from "@remix-run/node";
-import Back from "~/components/back";
 export const meta: MetaFunction = () => [
   { title: "Add" },
   { name: "description", content: "Add" },
@@ -39,60 +43,74 @@ export default function Index() {
     setCategory(cat.title);
   };
 
-  const handleSave = async () => {
-    fetcher.submit(
-      {
-        authorId: id,
-        type,
-        title,
-        category,
-        content: localStorage.getItem("slate" + path),
-      },
-      { method: "post" }
+  const Save = () => {
+    const handleSave = async () => {
+      fetcher.submit(
+        {
+          authorId: id,
+          type,
+          title,
+          category,
+          content: localStorage.getItem("slate" + path),
+        },
+        { method: "post" }
+      );
+      localStorage.removeItem("slate" + path);
+      setIsDraft(false);
+    };
+
+    return (
+      <button
+        onClick={handleSave}
+        style={
+          isDraft && title
+            ? { color: "crimson", fontWeight: "bold", opacity: "1" }
+            : { color: "black", fontWeight: "normal", opacity: "0.4" }
+        }
+        disabled={!isDraft || !title}
+      >
+        <IoSaveSharp />
+      </button>
     );
-    localStorage.removeItem("slate" + path);
-    setIsDraft(false);
   };
 
   return (
     <main>
-      <Back />
-      <section className="slate">
-        <input
-          type="text"
-          name="title"
-          placeholder="title"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <select value={type} onChange={handleType}>
-          <option value="page">page</option>
-          <option value="post">post</option>
-          <option value="category">category</option>
-        </select>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {categories
-            .filter((item: any) => item.category === type)
-            .map(({ title }) => (
-              <option key={title} value={title}>
-                {title}
-              </option>
-            ))}
-        </select>
-        <button
-          onClick={handleSave}
-          style={
-            isDraft && title
-              ? { color: "crimson", fontWeight: "bold", opacity: "1" }
-              : { color: "black", fontWeight: "normal", opacity: "0.4" }
-          }
-          disabled={!isDraft || !title}
-        >
-          <IoSaveSharp />
-        </button>
+      <article className="slate">
+        <header>
+          <div className="title">
+            <input
+              type="text"
+              name="title"
+              placeholder="title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <span>
+              <select value={type} onChange={handleType}>
+                <option value="page">page</option>
+                <option value="post">post</option>
+                <option value="category">category</option>
+              </select>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {categories
+                  .filter((item: any) => item.category === type)
+                  .map(({ title }) => (
+                    <option key={title} value={title}>
+                      {title}
+                    </option>
+                  ))}
+              </select>
+              <Save />
+            </span>
+          </div>
+        </header>
         <ClientOnly fallback={<div>Loading ...</div>}>
           <Editor onChange={setIsDraft}>insert text here</Editor>
         </ClientOnly>
-      </section>
+      </article>
     </main>
   );
 }

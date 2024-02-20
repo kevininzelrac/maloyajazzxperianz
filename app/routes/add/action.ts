@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { prisma } from "~/services/prisma.server";
+import prisma from "~/services/prisma.server";
 
 type FormData = {
   //[key: string]: string;
@@ -10,7 +10,7 @@ type FormData = {
   content: string;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
   const post = Object.fromEntries(await request.formData()) as FormData;
 
   await prisma.post.create({
@@ -22,3 +22,4 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return redirect("/" + post.title + "/Edit");
 };
+export default action;
