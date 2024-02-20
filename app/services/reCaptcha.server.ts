@@ -1,5 +1,3 @@
-// app/services/google/reCaptchaEntreprise.server.ts
-
 export interface RecaptchaResult {
   recaptcha_failure: boolean;
   message: string;

@@ -7,7 +7,7 @@ export const userSession = createCookieSessionStorage({
     //maxAge: 24 * 60 * 60,
     path: "/",
     sameSite: "lax",
-    secrets: [process.env.SESSION_SECRET as string],
+    secrets: [process.env.SESSION_SECRET],
     secure: process.env.NODE_ENV === "production",
   },
 });
@@ -19,7 +19,7 @@ export const newUserSession = createCookieSessionStorage({
     //maxAge: 24 * 60 * 60,
     path: "/",
     sameSite: "lax",
-    secrets: [process.env.SESSION_SECRET as string],
+    secrets: [process.env.SESSION_SECRET],
     secure: process.env.NODE_ENV === "production",
   },
 });
