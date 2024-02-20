@@ -6,7 +6,6 @@ type props = {
   attributes: object;
   children: ReactNode;
 };
-
 export default function H4({ element, attributes, children }: props) {
   return (
     <h4

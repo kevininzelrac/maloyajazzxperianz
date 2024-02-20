@@ -19,6 +19,7 @@ export type EmptyText = {
   italic?: boolean;
   underline?: boolean;
   code?: boolean;
+  color?: string;
   text: string;
 };
 
@@ -27,6 +28,7 @@ export type CustomText = {
   italic?: boolean;
   underline?: boolean;
   code?: boolean;
+  color?: string;
   text: string;
 };
 
@@ -118,6 +120,17 @@ export type YoutubeElement = {
   children: EmptyText[];
 };
 
+export type SpotifyElement = {
+  type: "spotify";
+  src: string;
+  float: float;
+  shape: string;
+  width: number;
+  height: number;
+  breakLine?: string;
+  children: EmptyText[];
+};
+
 export type VoidElement = ImageElement | YoutubeElement;
 
 export type CustomElement =
@@ -131,4 +144,5 @@ export type CustomElement =
   | ListItemElement
   | LinkElement
   | ImageElement
-  | YoutubeElement;
+  | YoutubeElement
+  | SpotifyElement;

@@ -1,7 +1,7 @@
 import { Editor, Element, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isActive = (editor: CustomEditor, textAlign: string) => {
   const [match] = Editor.nodes(editor, {
@@ -20,6 +20,7 @@ export default function TextAlign({ textAlign }: any) {
   return (
     <button
       className={isActive(editor, textAlign) ? "active" : undefined}
+      data-tooltip={textAlign}
       onMouseDown={(e) => {
         e.preventDefault();
         if (isActive(editor, textAlign)) {

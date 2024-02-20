@@ -4,6 +4,7 @@ import { Transforms } from "slate";
 import Resize from "../components/resize";
 import { ImageElement } from "../slate";
 import Tools from "../components/tools";
+import Loading from "~/components/loading";
 
 type props = {
   element: ImageElement;
@@ -16,6 +17,7 @@ export default function Image({ attributes, children, element }: props) {
   const selected = useSelected();
   const focused = useFocused();
   const path = ReactEditor.findPath(editor, element);
+  const [isLoading, setIsLoading] = useState(true);
 
   const ref: any = useRef(null);
 
@@ -43,6 +45,7 @@ export default function Image({ attributes, children, element }: props) {
 
   return (
     <>
+      {isLoading ? <Loading /> : null}
       {breakLine && <div style={{ clear: "both" }}></div>}
       <div
         ref={ref}
@@ -54,13 +57,14 @@ export default function Image({ attributes, children, element }: props) {
           float: float || "none",
           clear: float ? "none" : "both",
           borderRadius: shape ? "50%" : "",
-          shapeOutside: shape ? "circle()" : "",
+          shapeOutside: shape ? "circle(50%)" : "",
           position: "relative",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          margin: "6px",
-          zIndex: "1",
+          //margin: "20px",
+          padding: "6px",
+          //zIndex: "1",
           //width: pxTo100(size.width, ref?.current?.parentElement?.offsetWidth),
           /* height: size.height ? size.height + "px" : "auto", */
           /* height: "clamp('46%,'" + size.height + "px, 100%", */
@@ -69,6 +73,7 @@ export default function Image({ attributes, children, element }: props) {
       >
         <img
           src={element?.src}
+          onLoad={() => setIsLoading(false)}
           style={{
             position: "relative",
             borderRadius: "inherit",

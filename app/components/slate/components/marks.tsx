@@ -1,7 +1,7 @@
 import { Editor } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isMarkActive = (editor: CustomEditor, type: string) => {
   const marks: any = Editor.marks(editor);
@@ -22,6 +22,7 @@ export default function MarkButton({ type }: props) {
   return (
     <button
       className={isMarkActive(editor, type) ? "active" : undefined}
+      data-tooltip={type}
       onMouseDown={() => {
         toggleMark(editor, type);
       }}

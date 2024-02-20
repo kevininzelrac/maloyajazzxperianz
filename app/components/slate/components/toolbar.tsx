@@ -1,15 +1,21 @@
-import BlockButton from "./blocks";
-import { ToggleLink } from "./links";
-import MarkButton from "./marks";
-import TextAlign from "./textAlign";
-import AddVoid from "./voids";
 import { UndoButton, RedoButton } from "./history";
+import { ToggleLink } from "./links";
+import ColorPicker from "./colorPicker";
+import TextAlign from "./textAlign";
+import BlockButton from "./blocks";
+import MarkButton from "./marks";
+import AddVoid from "./voids";
+import RemoveNode from "./removeNode";
 
 export default function Toolbar() {
   return (
     <nav className="toolbar">
       <UndoButton />
       <RedoButton />
+
+      <RemoveNode />
+
+      <ColorPicker />
 
       <MarkButton type="bold" />
       <MarkButton type="italic" />
@@ -33,6 +39,7 @@ export default function Toolbar() {
       <ToggleLink />
       <AddVoid type="image" />
       <AddVoid type="youtube" />
+      <AddVoid type="spotify" />
     </nav>
   );
 }

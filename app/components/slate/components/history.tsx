@@ -1,10 +1,11 @@
 import { useSlate } from "slate-react";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 export const UndoButton = () => {
   const editor = useSlate();
   return (
     <button
+      data-tooltip="undo"
       onMouseDown={() => {
         editor.undo();
       }}
@@ -18,6 +19,7 @@ export const RedoButton = () => {
   const editor = useSlate();
   return (
     <button
+      data-tooltip="redo"
       onMouseDown={() => {
         editor.redo();
       }}

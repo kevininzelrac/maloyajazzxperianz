@@ -1,7 +1,7 @@
 import { Editor, Element, Range, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor, LinkElement } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isActive = (editor: CustomEditor) => {
   const [match] = Editor.nodes(editor, {
@@ -68,6 +68,7 @@ export const ToggleLink = () => {
   return (
     <button
       className={isActive(editor) ? "active" : undefined}
+      data-tooltip="link"
       onMouseDown={(event) => {
         event.preventDefault();
         if (isActive(editor)) {

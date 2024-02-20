@@ -1,11 +1,15 @@
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, type Descendant } from "slate";
-import { withHistory } from "slate-history";
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "@remix-run/react";
 import { RenderElement, RenderLeaf } from "./render";
-import Shortcuts from "./shortcuts";
+import { LinksFunction } from "@remix-run/node";
+import { useLocation } from "@remix-run/react";
+import { withHistory } from "slate-history";
 import Toolbar from "./components/toolbar";
+import Shortcuts from "./shortcuts";
+import slate from "./slate.css";
+
+export let links: LinksFunction = () => [{ rel: "stylesheet", href: slate }];
 
 export default function Editor({ children, onChange }: any) {
   const { pathname } = useLocation();
@@ -23,7 +27,7 @@ export default function Editor({ children, onChange }: any) {
         {
           type: "paragraph",
           textAlign: "left",
-          children: [{ text: children }],
+          children: [{ text: children, color: "#ffffff" }],
         },
       ];
     }
@@ -31,38 +35,41 @@ export default function Editor({ children, onChange }: any) {
 
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   return (
-    <Slate
-      editor={editor}
-      initialValue={
-        localStorage.getItem("slate" + path)
-          ? JSON.parse(localStorage.getItem("slate" + path) as string)
-          : initialValue
-      }
-      onChange={(value) => {
-        const isAstChange = editor.operations.some(
-          (op) => "set_selection" !== op.type
-        );
-
-        if (isAstChange) {
-          if (JSON.stringify(value) !== JSON.stringify(initialValue)) {
-            localStorage.setItem("slate" + path, JSON.stringify(value));
-            onChange(true);
-          } else {
-            localStorage.removeItem("slate" + path);
-            onChange(false);
-          }
+    <>
+      <Slate
+        editor={editor}
+        initialValue={
+          localStorage.getItem("slate" + path)
+            ? JSON.parse(localStorage.getItem("slate" + path) as string)
+            : initialValue
         }
-      }}
-    >
-      <Toolbar />
-      <Editable
-        autoFocus
-        renderElement={RenderElement}
-        renderLeaf={RenderLeaf}
-        onKeyDown={(e) => {
-          Shortcuts(e, editor);
+        onChange={(value) => {
+          const isAstChange = editor.operations.some(
+            (op) => "set_selection" !== op.type
+          );
+
+          if (isAstChange) {
+            if (JSON.stringify(value) !== JSON.stringify(initialValue)) {
+              localStorage.setItem("slate" + path, JSON.stringify(value));
+              onChange(true);
+            } else {
+              localStorage.removeItem("slate" + path);
+              onChange(false);
+            }
+          }
         }}
-      />
-    </Slate>
+      >
+        <Toolbar />
+        <Editable
+          autoFocus
+          className="editor"
+          renderElement={RenderElement}
+          renderLeaf={RenderLeaf}
+          onKeyDown={(e) => {
+            Shortcuts(e, editor);
+          }}
+        />
+      </Slate>
+    </>
   );
 }

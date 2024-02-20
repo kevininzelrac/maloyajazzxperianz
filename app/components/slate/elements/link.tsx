@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { LinkElement, ParagraphElement } from "../slate";
+import { LinkElement } from "../slate";
 
 type props = {
   element: LinkElement;

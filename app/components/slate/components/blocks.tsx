@@ -1,7 +1,7 @@
 import { Editor, Element, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor, CustomElement } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isBlockActive = (editor: CustomEditor, type: CustomElement["type"]) => {
   const { selection } = editor;
@@ -52,6 +52,7 @@ export default function BlockButton({ type }: { type: CustomElement["type"] }) {
   return (
     <button
       className={isBlockActive(editor, type) ? "active" : undefined}
+      data-tooltip={type}
       onMouseDown={() => {
         wrapBlock(editor, type);
       }}

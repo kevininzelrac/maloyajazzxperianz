@@ -1,7 +1,7 @@
 import { Transforms } from "slate";
 import { useFocused, useSelected, useSlate } from "slate-react";
 import { MouseEvent } from "react";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 type size = {
   width: number;

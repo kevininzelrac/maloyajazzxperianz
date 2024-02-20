@@ -1,9 +1,18 @@
+.slate {
+  background-color: var(--bkgrd01);
+  padding: 4px;
+}
 .slate > div::after {
   content: "";
   clear: both;
   display: table;
 }
 
+.slate > .editor {
+  width: 100%;
+  min-height: 5rem;
+  height: fit-content;
+}
 .slate > nav.toolbar {
   width: fit-content;
   height: fit-content;

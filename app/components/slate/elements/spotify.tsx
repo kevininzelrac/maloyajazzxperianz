@@ -13,7 +13,7 @@ type props = {
   children: ReactNode;
 };
 
-export default function Youtube({ attributes, children, element }: props) {
+export default function Spotify({ attributes, children, element }: props) {
   const { breakLine, float, shape, height, width } = element;
   const editor = useSlate();
   const selected = useSelected();
@@ -24,41 +24,42 @@ export default function Youtube({ attributes, children, element }: props) {
 
   const ref = useRef(null);
   const [size, setSize]: any = useState(() => {
-    const initialWidth = width && typeof width === "number" ? width : 180;
-    const initialHeight = height && typeof height === "number" ? height : 180;
-
-    Transforms.setNodes(
-      editor,
-      {
-        width: initialWidth,
-        height: initialHeight,
-      },
-      { at: path }
-    );
-
-    return {
-      width: initialWidth,
-      height: initialHeight,
-    };
-  });
-
-  useEffect(() => {
-    const defaultWidth = 600;
-    const defaultHeight = 337;
-
     if (!width || typeof width !== "number") {
-      setSize({
-        width: defaultWidth,
-        height: defaultHeight,
-      });
-
       Transforms.setNodes(
         editor,
         {
-          width: defaultWidth,
-          height: defaultHeight,
+          width: 180,
+          height: 180,
         },
         { at: path }
+      );
+      return {
+        width: 180,
+        height: 180,
+      };
+    } else {
+      return {
+        width: width,
+        height: height,
+      };
+    }
+  });
+
+  useEffect(() => {
+    if (!width || typeof width !== "number") {
+      setSize({
+        width: 600,
+        height: 337,
+      });
+      Transforms.setNodes(
+        editor,
+        {
+          width: 600,
+          height: 337,
+        },
+        {
+          at: path,
+        }
       );
     } else {
       setSize({
@@ -75,13 +76,14 @@ export default function Youtube({ attributes, children, element }: props) {
       <div
         ref={ref}
         contentEditable={false}
-        className="youtube"
+        className="spotify"
         style={{
           boxShadow: selected && focused ? "0 0 0 3px #B4D5FF" : " none ",
           float: float || "none",
           clear: float ? "none" : "both",
           borderRadius: shape ? "50%" : "",
           shapeOutside: shape ? "circle(50%)" : "",
+          //
           position: "relative",
           display: "flex",
           alignItems: "center",
@@ -94,9 +96,11 @@ export default function Youtube({ attributes, children, element }: props) {
         <iframe
           src={element.src}
           {...attributes}
-          title="YouTube video player"
+          title="Spotify player"
           width={size.width}
           height={size.height}
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
           allowFullScreen={false}
           onLoad={() => setIsLoading(false)}
           style={{

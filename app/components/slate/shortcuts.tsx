@@ -1,4 +1,4 @@
-import { Transforms } from "slate";
+import { Editor, Transforms, Range, Text } from "slate";
 import { CustomEditor, ParagraphElement } from "./slate";
 import { toggleMark } from "./components/marks";
 import { wrapLink } from "./components/links";
@@ -7,14 +7,38 @@ export default function Shortcuts(
   e: React.KeyboardEvent,
   editor: CustomEditor
 ) {
-  if (e.key === "Enter" /* && e.shiftKey */) {
+  const { selection } = editor;
+
+  const newLine: ParagraphElement = {
+    type: "paragraph",
+    textAlign: "left",
+    children: [{ text: "", color: "#ffffff" }],
+  };
+
+  if (e.key === "Enter") {
     e.preventDefault();
-    const newLine: ParagraphElement = {
-      type: "paragraph",
-      textAlign: "left",
-      children: [{ text: "" }],
-    };
     Transforms.insertNodes(editor, newLine);
+  }
+
+  if (e.key === "Backspace") {
+    if (selection && Range.isCollapsed(selection)) {
+      e.preventDefault();
+      const [match] = Editor.nodes(editor, {
+        at: Editor.before(editor, selection),
+        match: (node: any) =>
+          ["spotify", "youtube", "image"].includes(node.type),
+      });
+      if (match) {
+        Transforms.removeNodes(editor);
+        //Transforms.move(editor, {
+        //  distance: 1,
+        //  unit: "character",
+        //  reverse: true,
+        //});
+        return;
+      }
+      Editor.deleteBackward(editor);
+    }
   }
 
   if (!e.metaKey) {

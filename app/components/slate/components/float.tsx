@@ -1,7 +1,7 @@
 import { Editor, Element, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor, float } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isActive = (editor: CustomEditor, float: float) => {
   const [match] = Editor.nodes(editor, {
@@ -23,6 +23,7 @@ export default function Float({ float }: props) {
   return (
     <button
       className={isActive(editor, float) ? "active" : undefined}
+      data-tooltip={float}
       onMouseDown={() => {
         if (isActive(editor, float)) {
           Transforms.setNodes(editor, {

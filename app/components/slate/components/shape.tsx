@@ -1,7 +1,7 @@
 import { Editor, Element, Transforms } from "slate";
 import { useSlate } from "slate-react";
 import { CustomEditor } from "../slate";
-import { Icon } from "./icon";
+import Icon from "./icon";
 
 const isActive = (editor: CustomEditor, name: string) => {
   const [match] = Editor.nodes(editor, {
