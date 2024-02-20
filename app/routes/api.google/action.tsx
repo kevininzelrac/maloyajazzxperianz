@@ -1,26 +1,21 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
-import { OAuth2Client } from "google-auth-library";
-import jwt from "jsonwebtoken";
 import { userSession } from "~/services/session.server";
+import jwt from "jsonwebtoken";
+import signGoogleUser from "./signGoogleUser";
+import putRefreshToken from "../_auth.signin/putRefreshToken";
 
-import { signGoogleUser } from "./signGoogleUser";
-import { putRefreshToken } from "../_auth.signin/putRefreshToken";
-
-const googleClient = new OAuth2Client({
-  clientId: process.env.GOOGLE_CLIENT_ID,
-});
-
-export const action = async ({ request }: ActionFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const accessToken = formData.get("accessToken") as string;
 
-  const verifiedToken = await googleClient.verifyIdToken({
-    idToken: accessToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
-
-  const { sub, email, given_name, family_name, picture }: any =
-    verifiedToken.getPayload();
+  const response = await fetch(
+    "https://oauth2.googleapis.com/tokeninfo?id_token=" + accessToken,
+    { method: "GET" }
+  );
+  if (!response.ok) throw new Error("Error from Google API");
+  const { sub, email, given_name, family_name, picture } =
+    await response.json();
+  //console.log({ sub, email, given_name, family_name, picture });
 
   try {
     const googleUser = await signGoogleUser(
@@ -35,17 +30,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       id: googleUser!.id,
       email: googleUser!.email,
       firstname: googleUser!.firstname,
+      lastname: googleUser!.lastname,
       avatar: googleUser!.avatar,
     };
 
-    const refreshToken = jwt.sign(
-      newUser,
-      process.env.REFRESH_SECRET as string
-    );
+    const refreshToken = jwt.sign(newUser, process.env.REFRESH_SECRET);
 
     const verifiedRefresh = await putRefreshToken(googleUser!.id, refreshToken);
 
-    const accessToken = jwt.sign(newUser, process.env.ACCESS_SECRET as string, {
+    const accessToken = jwt.sign(newUser, process.env.ACCESS_SECRET, {
       expiresIn: process.env.ACCESS_TOKEN_DURATION,
     });
 
@@ -65,3 +58,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
   }
 };
+export default action;
+
+/* 
+If you want to use google-auth-library
+////npm i google-auth-library
+//import { OAuth2Client } from "google-auth-library";
+
+//const googleClient = new OAuth2Client({
+//  clientId: process.env.GOOGLE_CLIENT_ID,
+//});
+
+const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const accessToken = formData.get("accessToken") as string;
+
+  const verifiedToken = await googleClient.verifyIdToken({
+    idToken: accessToken,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const { sub, email, given_name, family_name, picture }: any =
+    verifiedToken.getPayload();
+
+    ...
+
+*/

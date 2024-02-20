@@ -1,7 +1,7 @@
-import { prisma } from "~/services/prisma.server";
 import { User } from "@prisma/client";
+import prisma from "~/services/prisma.server";
 
-export const signGoogleUser = async (
+const signGoogleUser = async (
   id: string,
   email: string,
   firstname: string,
@@ -22,3 +22,4 @@ export const signGoogleUser = async (
 
   return user;
 };
+export default signGoogleUser;
