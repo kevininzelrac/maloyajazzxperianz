@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { prisma } from "~/services/prisma.server";
+import prisma from "~/services/prisma.server";
 
 type FormData = {
   //[key: string]: string;
@@ -7,7 +7,7 @@ type FormData = {
   id: string;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+const action = async ({ request }: ActionFunctionArgs) => {
   const post = Object.fromEntries(await request.formData()) as FormData;
 
   await deletePost(post.id);
@@ -42,3 +42,4 @@ const deletePost = async (id: string) => {
     },
   });
 };
+export default action;
