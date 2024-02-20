@@ -1,16 +1,20 @@
 import { LoaderFunctionArgs, json, redirect } from "@remix-run/node";
-import { auth } from "~/services/auth/index.server";
-import { prisma } from "~/services/prisma.server";
+import auth from "~/services/auth.server";
+import prisma from "~/services/prisma.server";
+import sleep from "~/utils/sleep";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
   if (!id)
     return redirect("/signin", {
       headers,
     });
 
+  const isBlog = new URL(request.url).pathname.includes("blog");
+
   const page = await prisma.post.findFirst({
     where: {
+      type: isBlog ? "post" : "page",
       title: params.page,
     },
   });
@@ -27,12 +31,16 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   });
 
   const defaults = [
-    { category: "page", type: "category" },
-    { category: "post", type: "category" },
+    { type: "category", category: "page" },
+    { type: "category", category: "post" },
   ];
 
   defaults.forEach((item) => {
-    if (!categories.some(({ category }) => category === item.category)) {
+    if (
+      !categories.some(
+        ({ type, category }) => type === item.type && category === item.category
+      )
+    ) {
       categories.push(item);
     }
   });
@@ -49,5 +57,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       statusText: "Forbidden",
     });
 
+  await sleep;
   return json({ id, page, categories }, { headers });
 };
+export default loader;
