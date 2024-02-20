@@ -1,15 +1,24 @@
 import { LoaderFunctionArgs, defer } from "@remix-run/node";
-import { auth } from "~/services/auth/index.server";
-import { prisma } from "~/services/prisma.server";
+import withPriviledges from "~/middlewares/withPriviledge";
+import auth from "~/services/auth.server";
+import prisma from "~/services/prisma.server";
+import sleep from "~/utils/sleep";
 
 export const config = { runtime: "edge" };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+const loader = async ({ request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  const response = Promise.resolve().then(() =>
-    prisma.post.findMany({
-      where: id ? { type: "post" } : { type: "post", published: true },
+  const user = id
+    ? await prisma.user.findUnique({
+        where: { id },
+        select: { id: true, role: true },
+      })
+    : undefined;
+
+  const response = Promise.resolve().then(async () => {
+    return prisma.post.findMany({
+      where: withPriviledges(user!, { type: "post" }),
       select: {
         id: true,
         type: true,
@@ -17,7 +26,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         title: true,
         content: true,
         createdAt: true,
-        published: true,
+        status: true,
+        audience: true,
         authorId: true,
         author: {
           select: {
@@ -30,34 +40,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       orderBy: {
         createdAt: "desc",
       },
-    })
-  );
-
-  return defer({ id, response }, { headers });
-};
-
-/* const getPosts = async (): Promise<PostWithAuthor[]> => {
-  //await new Promise<void>((resolve) => setTimeout(resolve, 1000));
-  return prisma.post.findMany({
-    where: id ? { type: "post" } : { type: "post", published: true },
-    select: {
-      type: true,
-      title: true,
-      content: true,
-      category: true,
-      createdAt: true,
-      published: true,
-      authorId: true,
-      author: {
-        select: {
-          firstname: true,
-          lastname: true,
-          avatar: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
+    });
   });
-}; */
+
+  //await Promise.race([sleep, response]);
+  await sleep;
+  return defer({ user, response }, { headers });
+};
+export default loader;

@@ -1,33 +1,45 @@
-import { Await, useLoaderData } from "@remix-run/react";
 import { LinksFunction, MetaFunction } from "@remix-run/node";
+import { Await, useLoaderData } from "@remix-run/react";
 import { Suspense } from "react";
-
-import { Article } from "~/components/article";
-
-import { loader } from "./loader";
+import loader from "./loader";
 import ErrorBoundary from "~/components/errorBoundary";
+import ErrorElement from "~/components/errorElement";
+import Card from "~/components/card";
+import styles from "./styles.css";
+import responsive from "./responsive.css";
+import Loading from "~/components/loading";
+import Transition from "~/components/transition";
+
 export { loader, ErrorBoundary };
 
-import ErrorElement from "~/components/errorElement";
-
-import styles from "./styles.css";
-export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+export let links: LinksFunction = () => [
+  { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: responsive },
+];
 
 export const meta: MetaFunction = () => [
-  { title: "Blog" },
+  { title: "blog" },
   { name: "description", content: "blog" },
 ];
 
 export default function Blog() {
-  const { id, response } = useLoaderData<typeof loader>();
+  const { user, response } = useLoaderData<typeof loader>();
+  //const { key } = useLocation();
+
   return (
-    <Suspense fallback={<div>Loading</div>}>
+    <Suspense fallback={<Loading />}>
       <Await resolve={response} errorElement={<ErrorElement />}>
-        {(posts) =>
-          posts.map((post) => (
-            <Article key={post.title} post={post} userId={id} />
-          ))
-        }
+        {(posts) => {
+          return (
+            <Transition>
+              <div className="post-list">
+                {posts.map((post) => (
+                  <Card key={post.id} post={post} user={user!} />
+                ))}
+              </div>
+            </Transition>
+          );
+        }}
       </Await>
     </Suspense>
   );

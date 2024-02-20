@@ -1,0 +1,25 @@
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+article {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  background-color: black;
+}
+
+article > div.tools {
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 6px;
+  z-index: 1;
+}

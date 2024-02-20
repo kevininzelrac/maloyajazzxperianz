@@ -1,51 +1,58 @@
 import { useLoaderData } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
-
-import { loader } from "./loader";
+import { LinksFunction, MetaFunction } from "@remix-run/node";
+import Badge from "~/components/badge";
+import Back from "~/components/back";
+import Header from "~/components/header";
 import ErrorBoundary from "~/components/errorBoundary";
+import ReadOnly from "~/components/slate/readOnly";
+import loader from "./loader";
+import styles from "./styles.css";
+import Status from "~/components/status";
+import Edit from "~/components/edit";
+import Delete from "~/components/delete";
+import Transition from "~/components/transition";
+import ClientOnly from "~/utils/clientOnly";
+import Loading from "~/components/loading";
+
 export { loader, ErrorBoundary };
 
-import ReadOnly from "~/components/slate/readOnly";
+export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta: MetaFunction = ({ params }) => [
   { title: params.post },
   { name: "description", content: params.post },
 ];
 
-import Badge from "~/components/badge";
-import Edit from "~/components/edit";
-import Delete from "~/components/delete";
-import Back from "~/components/back";
-import Published from "~/components/published";
-
 export default function Index() {
-  const { id, post } = useLoaderData<typeof loader>();
-
+  const { user, post } = useLoaderData<typeof loader>();
+  let isAuthor = user?.id === post.authorId;
+  let isAdmin = user?.role === "ADMIN";
   return (
-    <section className="slate">
+    <>
       <Back />
-      <header>
-        <div className="title">
-          <h3>{post!.title}</h3>
-          {id === post!.authorId ? (
-            <span>
-              <Published published={post!.published} />
-              <Edit to={"/blog/" + post!.category + "/" + post!.title} />
-              <Delete id={post!.id} type={post!.type} />
-            </span>
-          ) : null}
-        </div>
-        <div className="metadata">
-          category <b>{post!.category} </b>
-          <time>
-            <i>écrit le {new Date(post!.createdAt).toLocaleDateString("fr")}</i>
-          </time>
-        </div>
-        <Badge author={post!.author} />
-      </header>
-      <article>
-        <ReadOnly>{post?.content}</ReadOnly>
-      </article>
-    </section>
+      <Transition>
+        <article>
+          <div className="tools">
+            {user?.id && <Status status={post.status} />}
+            {isAuthor && (
+              <Edit to={"/blog/" + post.category + "/" + post.title} />
+            )}
+            {(isAdmin || isAuthor) && <Delete id={post.id} type={post.type!} />}
+          </div>
+          <Header {...post} />
+          <Badge {...post} />
+          <ClientOnly fallback={<Loading />}>
+            <ReadOnly>{post?.content}</ReadOnly>
+          </ClientOnly>
+          {[undefined, "FOLLOWER"].includes(user?.role) && (
+            <section>
+              <br />
+              <h4>comments</h4>
+              <p>TODO...</p>
+            </section>
+          )}
+        </article>
+      </Transition>
+    </>
   );
 }
