@@ -1,5 +1,11 @@
 generator client {
   provider = "prisma-client-js"
+  //output = "../generated/client" 
+  // + npm add db@./generated/client
+  // import {PrismaClient } from "db";
+  // or
+  //output   = "../node_modules/kevin/prisma/client"
+  // import {PrismaClient } from "kevin/prisma/client/index.js";
 }
 datasource db {
   provider = "postgresql"
@@ -8,27 +14,28 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email    String @unique
-  fullName String
-  firstname String
-  lastname String
-  avatar String
-  Credential Credential?
-  RefreshToken RefreshToken[]
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  email         String    @unique
+  fullName      String
+  firstname     String
+  lastname      String
+  avatar        String
+  Credential    Credential?
+  RefreshToken  RefreshToken[]
   Post Post[]
+  role          Role      @default(BASIC)
   @@index([email])
 }
 
 model Credential {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  passwordHash String?
-  userId       String  @db.Uuid
-  user User @relation(fields: [userId], references: [id])
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  passwordHash  String?
+  userId        String    @db.Uuid
+  user          User      @relation(fields: [userId], references: [id])
   @@unique([userId])
 }
 
@@ -45,11 +52,29 @@ model Post {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   authorId  String    @db.Uuid
   title     String
-  type      String   @default("")
-  category  String   @default("empty")
+  type      String    @default("")
+  category  String    @default("empty")
   content   String
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [authorId], references: [id])
+  status    Status    @default(DRAFT)
+  audience  Audience  @default(PRIVATE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  author    User      @relation(fields: [authorId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  BASIC
+  FOLLOWER
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+}
+
+enum Audience {
+  PUBLIC
+  PRIVATE
 }
