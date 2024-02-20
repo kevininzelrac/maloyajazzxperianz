@@ -1,15 +1,15 @@
 export default function Dialog({
   children,
-  handleClose,
+  handleClick,
 }: {
-  children: any;
-  handleClose: () => void;
+  children: JSX.Element;
+  handleClick: () => void;
 }) {
   return (
     <dialog>
-      <div className="opaque" onClick={handleClose}></div>
+      <span className="opaque" onClick={handleClick}></span>
       <div>
-        <button className="close" onClick={handleClose}>
+        <button className="close" onClick={handleClick}>
           x
         </button>
         {children}

@@ -1,9 +1,15 @@
 import { useFetcher, useLocation } from "@remix-run/react";
 import { useState } from "react";
-import Dialog from "./dialog";
+import { Prisma } from "@prisma/client";
 import { MdDeleteForever } from "react-icons/md";
+import Dialog from "./dialog";
 
-export default function Delete({ id, type }: any) {
+export default function Delete({
+  id,
+  type,
+}: Prisma.PostGetPayload<{
+  select: { id: true; type: true };
+}>) {
   const fetcher = useFetcher();
   const { pathname } = useLocation();
   const [display, setDisplay] = useState(false);
@@ -28,7 +34,7 @@ export default function Delete({ id, type }: any) {
   return (
     <>
       {display ? (
-        <Dialog handleClose={() => setDisplay(false)}>
+        <Dialog handleClick={() => setDisplay(false)}>
           <ConfirmDelete />
         </Dialog>
       ) : null}

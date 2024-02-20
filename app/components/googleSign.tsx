@@ -6,41 +6,44 @@ declare global {
     handleCreds: (response: any) => void;
   }
 }
-export default function GoogleSign({ clientId }: { clientId: string }) {
+
+export default function GoogleSign({ client_id }: { client_id: string }) {
   const fetcher = useFetcher();
 
   useEffect(() => {
-    const gsiScript = document.createElement("script");
-    gsiScript.src = "https://accounts.google.com/gsi/client";
-    gsiScript.async = true;
-    gsiScript.defer = true;
-    document.head.appendChild(gsiScript);
-  }, []);
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
 
-  !(typeof document === "undefined")
-    ? (window.handleCreds = ({ credential }: any) => {
-        fetcher.submit(
-          {
-            type: "google",
-            accessToken: credential,
-            offset: new Date().getTimezoneOffset(),
-          },
-          { method: "post", action: "/api/google" }
-        );
-      })
-    : null;
+    window.handleCreds = ({ credential }: any) => {
+      fetcher.submit(
+        {
+          type: "google",
+          accessToken: credential,
+          offset: new Date().getTimezoneOffset(),
+        },
+        { method: "post", action: "/api/google" }
+      );
+    };
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   return (
     <>
       <div
         id="g_id_onload"
-        data-client_id={clientId}
+        data-client_id={client_id}
         data-callback="handleCreds"
         data-auto_prompt="false"
       ></div>
       {fetcher.state === "idle" ? (
         <div
           className="g_id_signin"
+          data-height="auto"
           data-type="standard"
           data-size="large"
           data-width="300"

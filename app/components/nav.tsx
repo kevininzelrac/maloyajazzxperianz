@@ -1,34 +1,43 @@
+import { User } from "@prisma/client";
 import { NavLink } from "@remix-run/react";
+import { useEffect, useState } from "react";
 
-export default function Nav({ data, id }: any) {
+export default function Nav({ user, data }: { user: any; data: any }) {
+  const [scroll, setScroll] = useState(false);
+
+  useEffect(
+    () =>
+      window.addEventListener("scroll", () => {
+        setScroll(window.scrollY > 290);
+      }),
+    []
+  );
+
   return (
     <>
-      <nav className="navbar">
+      <nav className={scroll ? "navbar scroll" : "navbar "}>
         <NavLink to="/" prefetch="intent">
-          HOME
+          MJX
         </NavLink>
-        <Recursive data={data} id={id} />
+        <Recursive data={data} id={user?.id} />
+        <NavLink to="shows" prefetch="intent">
+          SHOWS
+        </NavLink>
         <NavLink to="blog" prefetch="intent">
           BLOG
         </NavLink>
         <NavLink to="contact" prefetch="intent">
           CONTACT
         </NavLink>
-        {id ? (
+        {user?.id ? (
           <>
-            <NavLink to="upload" prefetch="intent">
-              UPLOAD
-            </NavLink>
             <NavLink to="profil" prefetch="intent">
-              PROFIL
-            </NavLink>
-            <NavLink to="add" prefetch="intent">
-              +
+              <img src={user.avatar} className="avatar" />
             </NavLink>
           </>
         ) : (
           <NavLink to="signin" prefetch="intent">
-            SIGN IN
+            AUTH
           </NavLink>
         )}
       </nav>
@@ -36,7 +45,15 @@ export default function Nav({ data, id }: any) {
   );
 }
 
-const Recursive = ({ data, id, parent = "" }: any) => {
+const Recursive = ({
+  data,
+  id,
+  parent = "",
+}: {
+  data: any;
+  id: User["id"] | null;
+  parent?: string;
+}) => {
   return data?.map(({ title, children }: any) =>
     children.length > 0 ? (
       <div key={title}>

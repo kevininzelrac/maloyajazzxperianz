@@ -13,7 +13,7 @@ type ReCaptchaProps = {
   onError: (error: any) => void;
 };
 
-export default function ReCaptchaEnterprise({
+export default function ReCaptchaEnterpriseV2({
   siteKey,
   action,
   onTokenChange,
@@ -26,10 +26,8 @@ export default function ReCaptchaEnterprise({
     script.src = `https://www.google.com/recaptcha/enterprise.js?render=${siteKey}`;
     script.async = true;
     script.defer = true;
-    script.id = "recaptcha";
-    document.head.appendChild(script);
 
-    script.onload = () => {
+    const handleScriptLoad = () => {
       window.grecaptcha.enterprise.ready(() => {
         window.grecaptcha.enterprise
           .execute(siteKey, {
@@ -46,12 +44,20 @@ export default function ReCaptchaEnterprise({
       });
     };
 
-    script.onerror = (event: Event | string) => {
+    const handleScriptError = (event: Event | string) => {
       console.error("Error loading reCAPTCHA script:", event);
       onError && onError(event);
     };
 
+    script.addEventListener("load", handleScriptLoad);
+    script.addEventListener("error", handleScriptError);
+
+    document.head.appendChild(script);
+
     return () => {
+      // Cleanup on component unmount
+      script.removeEventListener("load", handleScriptLoad);
+      script.removeEventListener("error", handleScriptError);
       document.head.removeChild(script);
     };
   }, [siteKey, action, onTokenChange, onError]);
