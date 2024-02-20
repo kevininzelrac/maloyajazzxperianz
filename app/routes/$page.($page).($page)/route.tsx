@@ -1,53 +1,54 @@
 import { useLoaderData, useLocation } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
-
-import { loader } from "./loader";
+import { LinksFunction, MetaFunction } from "@remix-run/node";
 import ErrorBoundary from "~/components/errorBoundary";
-export { loader, ErrorBoundary };
-
 import ReadOnly from "~/components/slate/readOnly";
+import Status from "~/components/status";
+import Delete from "~/components/delete";
+//import Header from "~/components/header";
+//import Badge from "~/components/badge";
+import Edit from "~/components/edit";
+import loader from "./loader";
+import styles from "./styles.css";
+import Transition from "~/components/transition";
+import ClientOnly from "~/utils/clientOnly";
+import Loading from "~/components/loading";
+import { FaUserLock, FaUsers } from "react-icons/fa";
+import Audience from "~/components/audience";
+
+export { loader, ErrorBoundary };
 
 export const meta: MetaFunction = ({ params }) => [
   { title: params.page },
   { name: "description", content: params.page },
 ];
 
-import Delete from "~/components/delete";
-import Edit from "~/components/edit";
-import Published from "~/components/published";
+export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export default function Index() {
-  const { id, page } = useLoaderData<typeof loader>();
-  const { pathname } = useLocation();
+  const { user, page } = useLoaderData<typeof loader>();
+  const { key, pathname } = useLocation();
+  let isAuthor = user?.id === page.authorId;
+  let isAdmin = user?.role === "ADMIN";
 
   return (
-    <section key={pathname} className="slate">
-      <header>
-        <div className="title">
-          <h3>{page!.title}</h3>
-          {id === page!.authorId ? (
-            <span>
-              <Published published={page!.published!} />
-              <Edit to={pathname} />
-              <Delete id={page!.id} type={page!.type} />
-            </span>
-          ) : null}
-        </div>
-        {id ? (
-          <div className="metadata">
-            <b>{page!.category}</b>
-            {"  "}
-            <time>
-              <i>
-                écrit le {new Date(page!.createdAt!).toLocaleDateString("fr")}
-              </i>
-            </time>
+    <Transition>
+      <main key={key} className="page">
+        <article>
+          <div className="tools">
+            {user?.id && <Status status={page.status!} />}
+            {user?.id && <Audience audience={page.audience} />}
+            {isAuthor! && <Edit to={pathname} />}
+            {(isAdmin! || isAuthor!) && (
+              <Delete id={page.id} type={page.type} />
+            )}
           </div>
-        ) : null}
-      </header>
-      <article>
-        <ReadOnly>{page?.content}</ReadOnly>
-      </article>
-    </section>
+          <ClientOnly fallback={<Loading />}>
+            <ReadOnly>{page?.content}</ReadOnly>
+          </ClientOnly>
+          {/* {user.id && <Header {...page} />} */}
+          {/* user.id && <Badge {...page} /> */}
+        </article>
+      </main>
+    </Transition>
   );
 }
