@@ -9,9 +9,7 @@ export default function ClientOnly({
 }): ReactNode {
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => setIsClient(true), []);
 
   return isClient ? children : fallback;
 }
