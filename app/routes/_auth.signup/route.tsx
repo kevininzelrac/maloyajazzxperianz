@@ -1,8 +1,7 @@
-import { type MetaFunction } from "@remix-run/node";
+import { MetaFunction } from "@remix-run/node";
 import { SetStateAction, useState } from "react";
 import { Form } from "@remix-run/react";
-
-import { action } from "./action";
+import action from "./action";
 import ErrorBoundary from "~/components/errorBoundary";
 export { action, ErrorBoundary };
 
@@ -21,7 +20,7 @@ export default function SignUp() {
       : { borderBottom: "3px solid crimson" };
 
   return (
-    <main>
+    <>
       <Form method="post">
         <input type="text" name="firstname" placeholder="firstname" />
         <input type="text" name="lastname" placeholder="lastname" />
@@ -43,12 +42,13 @@ export default function SignUp() {
 
         <button
           type="submit"
+          className="primary"
           disabled={password === "" || confirm === "" || password !== confirm}
           style={{ opacity: password === confirm ? "1" : ".6" }}
         >
           submit
         </button>
       </Form>
-    </main>
+    </>
   );
 }

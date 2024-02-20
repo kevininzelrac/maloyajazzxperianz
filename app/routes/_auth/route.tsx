@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from "@remix-run/react";
 import { LinksFunction } from "@remix-run/node";
 
-import { loader } from "./loader";
+import loader from "./loader";
 import ErrorBoundary from "~/components/errorBoundary";
 export { loader, ErrorBoundary };
 
@@ -11,9 +11,8 @@ export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 export default function Auth() {
   return (
     <main>
-      <h2>Auth</h2>
       <nav>
-        <NavLink to="signin">Sign In</NavLink>
+        <NavLink to="signin">Sign In</NavLink>•
         <NavLink to="signup">Sign Up</NavLink>
       </nav>
       <Outlet />

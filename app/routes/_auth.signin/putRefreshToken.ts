@@ -1,6 +1,6 @@
-import { prisma } from "~/services/prisma.server";
+import prisma from "~/services/prisma.server";
 
-export const putRefreshToken = async (
+const putRefreshToken = async (
   userId: string,
   token: string
 ): Promise<string | null> => {
@@ -25,3 +25,4 @@ export const putRefreshToken = async (
     return newRefreshToken.token;
   }
 };
+export default putRefreshToken;

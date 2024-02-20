@@ -1,6 +1,6 @@
-import { prisma } from "~/services/prisma.server";
+import prisma from "~/services/prisma.server";
 
-export const revokeRefreshToken = async (
+const revokeRefreshToken = async (
   userId: string,
   token: string
 ): Promise<void> => {
@@ -14,3 +14,4 @@ export const revokeRefreshToken = async (
     },
   });
 };
+export default revokeRefreshToken;

@@ -1,10 +1,10 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { userSession } from "~/services/session.server";
-import { signUser } from "./signUser";
-import { putRefreshToken } from "./putRefreshToken";
+import signUser from "./signUser";
+import putRefreshToken from "./putRefreshToken";
 import jwt from "jsonwebtoken";
 
-export async function action({ request }: ActionFunctionArgs) {
+const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -15,17 +15,15 @@ export async function action({ request }: ActionFunctionArgs) {
       id: user?.id,
       email: user?.email,
       firstname: user?.firstname,
+      lastname: user?.lastname,
       avatar: user?.avatar,
     };
 
-    const refreshToken = jwt.sign(
-      newUser,
-      process.env.REFRESH_SECRET as string
-    );
+    const refreshToken = jwt.sign(newUser, process.env.REFRESH_SECRET);
 
     const verifiedRefresh = await putRefreshToken(user?.id!, refreshToken);
 
-    const accessToken = jwt.sign(newUser, process.env.ACCESS_SECRET as string, {
+    const accessToken = jwt.sign(newUser, process.env.ACCESS_SECRET, {
       expiresIn: process.env.ACCESS_TOKEN_DURATION,
     });
 
@@ -44,4 +42,5 @@ export async function action({ request }: ActionFunctionArgs) {
       error: "Wooops Something Weird just happened !",
     });
   }
-}
+};
+export default action;

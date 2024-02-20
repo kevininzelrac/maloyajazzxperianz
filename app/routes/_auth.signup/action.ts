@@ -8,9 +8,7 @@ import bcrypt from "bcryptjs";
 import { newUserSession } from "~/services/session.server";
 //import mail from "./mail";
 
-export const action: ActionFunction = async ({
-  request,
-}: ActionFunctionArgs) => {
+const action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
   const { firstname, lastname, email, password } = Object.fromEntries(
     await request.formData()
   ) as { firstname: string; lastname: string; email: string; password: string };
@@ -57,3 +55,4 @@ function verificationCode() {
   //}
   return "0000";
 }
+export default action;

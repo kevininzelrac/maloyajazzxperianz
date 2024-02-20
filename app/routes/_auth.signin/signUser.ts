@@ -1,14 +1,17 @@
-import { prisma } from "~/services/prisma.server";
-import { User } from "@prisma/client";
+import prisma from "~/services/prisma.server";
 import bcrypt from "bcryptjs";
 
-export const signUser = async (
-  email: string,
-  password: string
-): Promise<User | null> => {
+const signUser = async (email: string, password: string) => {
   const user = await prisma.user.findUnique({
     where: {
       email: email,
+    },
+    select: {
+      id: true,
+      firstname: true,
+      lastname: true,
+      email: true,
+      avatar: true,
     },
   });
 
@@ -31,3 +34,5 @@ export const signUser = async (
 
   return user;
 };
+
+export default signUser;

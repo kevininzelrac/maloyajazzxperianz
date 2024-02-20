@@ -1,6 +1,6 @@
-import { prisma } from "~/services/prisma.server";
+import prisma from "~/services/prisma.server";
 
-export const putNewUser = async (
+const putNewUser = async (
   firstname: string,
   lastname: string,
   email: string,
@@ -27,3 +27,4 @@ export const putNewUser = async (
     passwordHash,
   };
 };
+export default putNewUser;

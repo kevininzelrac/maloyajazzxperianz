@@ -1,8 +1,8 @@
 import { Form, useLoaderData } from "@remix-run/react";
-import { type MetaFunction } from "@remix-run/node";
+import { MetaFunction } from "@remix-run/node";
 
-import { action } from "./action";
-import { loader } from "./loader";
+import action from "./action";
+import loader from "./loader";
 import ErrorBoundary from "~/components/errorBoundary";
 export { loader, action, ErrorBoundary };
 
@@ -20,7 +20,9 @@ export default function ConfirmSignUp() {
       <Form method="post">
         <label>{email}</label>
         <input type="text" name="code" placeholder="verification code" />
-        <button type="submit">Submit</button>
+        <button className="primary" type="submit">
+          Submit
+        </button>
       </Form>
     </>
   );

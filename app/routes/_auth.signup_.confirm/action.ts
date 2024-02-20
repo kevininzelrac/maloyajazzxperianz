@@ -1,11 +1,9 @@
 import { ActionFunction, ActionFunctionArgs, redirect } from "@remix-run/node";
 import { newUserSession } from "~/services/session.server";
 import bcrypt from "bcryptjs";
-import { putNewUser } from "./putNewUser";
+import putNewUser from "./putNewUser";
 
-export const action: ActionFunction = async ({
-  request,
-}: ActionFunctionArgs) => {
+const action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
   const _newUser = await newUserSession.getSession(
     request.headers.get("Cookie")
   );
@@ -35,3 +33,4 @@ export const action: ActionFunction = async ({
     throw new Error("Wooops, something weird just happened");
   }
 };
+export default action;
