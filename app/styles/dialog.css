@@ -5,23 +5,24 @@ dialog {
   justify-content: center;
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 2;
   background-color: transparent;
   border: none;
+  overflow: hidden;
 }
 
-dialog > div.opaque {
+dialog > span.opaque {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
   top: 0;
   left: 0;
-  background-color: #323232;
+  background-color: var(--dark);
   z-index: 0;
-  opacity: 0.3;
+  opacity: 0.7;
 }
 
 dialog > div {
@@ -33,7 +34,8 @@ dialog > div {
   background-color: ghostwhite;
   width: fit-content;
   height: fit-content;
-  padding: 100px;
+  /* padding: 100px; */
+  padding: 20px;
   z-index: 1;
   border-radius: 8px;
 }
@@ -45,7 +47,7 @@ dialog > div > button.close {
   width: 30px;
   height: 30px;
   color: ghostwhite;
-  background-color: #336699;
+  background-color: var(--primary);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -72,5 +74,5 @@ dialog > div > form > button {
   width: 100%;
   height: fit-content;
   color: ghostwhite;
-  background-color: #336699;
+  background-color: var(--primary);
 }

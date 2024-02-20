@@ -1,14 +1,93 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Montserrat-Regular", sans-serif;
   font-size: 1rem;
+  list-style-position: inside;
 }
 
 .react-icons {
   width: 1em;
   height: 1em;
   vertical-align: top;
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #000000;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  width: var(--width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  /* background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 1) 20%,
+      rgba(0, 0, 0, 0.3) 80%
+    ),
+    url("public/img/mjx010.jpg") no-repeat fixed top center/cover, #222222; */
+  /* background: url("public/img/emy05.jpg") no-repeat fixed top -50% right 20% #000000; */
+
+  color: ghostwhite;
+}
+
+.background-image {
+  z-index: -1;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-46%, -70%);
+}
+
+header {
+  width: 100%;
+}
+
+header>div.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header>div.title>input {
+  width: 70%;
+  height: 1rem;
+}
+
+h1 {
+  font-family: "Bebas", sans-serif;
+  /* font-size: clamp(2rem, -1.6667rem + 10.6667vw, 5rem); */
+  font-size: 5rem;
+  text-align: right;
+  color: ghostwhite;
+  align-self: flex-start;
+}
+
+h2,
+h2 span {
+  font-family: "Montserrat-Regular", sans-serif;
+  font-size: 2rem;
+}
+
+h3,
+h3 span {
+  font-family: "Montserrat-Regular", sans-serif;
+  font-size: 1.5rem;
+}
+
+h4,
+h4 span {
+  font-family: "Montserrat-Regular", sans-serif;
+  font-size: 1.2rem;
 }
 
 button {
@@ -18,52 +97,50 @@ button {
   margin: 1px;
   text-align: center;
 
-  width: 1.8em;
-  height: 1.8em;
+  width: 1.6em;
+  height: 1.6em;
   border-radius: 4px;
   border: 1px solid gainsboro;
   color: grey;
 }
+
 button:hover {
   color: black;
 }
 
 button.active {
-  border: 1px solid #336688;
+  border: 2px solid var(--primary);
 }
 
-a {
-  text-decoration: none;
-  font-weight: bold;
+[data-tooltip]::after {
+  position: absolute;
+  content: attr(data-tooltip);
+  display: none;
+  background: ghostwhite;
   color: #323232;
+  margin-top: 8px;
+  padding: 4px;
+  font-size: small;
+  opacity: 0;
+  transition: opacity 400ms ease 800ms;
+  z-index: 2;
 }
 
-a:hover,
-label:hover {
-  color: black;
-}
-a.pending {
-  color: crimson;
-}
-a.active {
-  color: #336699;
+[data-tooltip]:hover::after {
+  display: block;
+  opacity: 1;
 }
 
 .grecaptcha-badge {
   visibility: hidden;
 }
 
-h1 {
-  font-size: 1.8rem;
-  text-transform: uppercase;
-  text-shadow: 3px 4px 8px rgba(114, 114, 114, 0.4);
+/* Google Sign Flicker Fix */
+.g_id_signin>div>div:first-child {
+  display: none;
 }
-h2 {
-  font-size: 1.6rem;
-}
-h3 {
-  font-size: 1.4rem;
-}
-h4 {
-  font-size: 1.2rem;
+
+small,
+small>* {
+  font-size: 0.7rem;
 }

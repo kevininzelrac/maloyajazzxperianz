@@ -1,0 +1,13 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Audiowide&family=Gruppo&family=Major+Mono+Display&family=Orbitron&display=swap"); */
+
+:root {
+  --width: clamp(340px, 70%, 700px);
+  /* --bkgrd01: #323232b3; */
+  --bkgrd01: #000000;
+  --bkgrd: #000000;
+  --primary: #cc3333;
+  --secondary: #ffd700;
+  --dark: #323232;
+  --grey: "#898F9C";
+  --textShade01: 1px 1px 3px #323232;
+}

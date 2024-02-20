@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "Bebas";
+  src: url("public/fonts/Bebas-Regular.ttf");
+}
+@font-face {
+  font-family: "BebasNeue";
+  src: url("public/fonts/BebasNeue-Regular.ttf");
+}
+@font-face {
+  font-family: "Montserrat-Regular.ttf";
+  src: url("public/fonts/Montserrat-Regular.ttf");
+}
+@font-face {
+  font-family: "Montserrat-Bold.ttf";
+  src: url("public/fonts/Montserrat-Bold.ttf");
+}
+@font-face {
+  font-family: "Breathing";
+  src: url("public/fonts/Breathing.ttf");
+}

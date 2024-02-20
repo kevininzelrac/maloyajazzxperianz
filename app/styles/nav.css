@@ -1,40 +1,75 @@
 nav.navbar {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: fit-content;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0px;
   z-index: 1;
-  gap: 10px;
-  list-style: none;
-  background-color: white;
+  /* gap: 10px; */
+  /* width: 700px; */
+  width: 100%;
+  padding: 10px;
+  transition: background-color 200ms ease-in-out;
 }
 
-nav.navbar > div > div {
+nav.navbar.scroll {
+  background: black;
+}
+
+nav.navbar div>div {
   display: none;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   position: absolute;
-  background-color: white;
+  /* background-color: white; */
 }
 
-nav.navbar div:hover > div {
+nav.navbar div:hover>div {
   display: flex;
 }
 
-nav a,
-nav div > label,
-nav div > a {
+nav>a>img.avatar {
+  width: 30px;
+  height: 30px;
+  border: 1px solid gainsboro;
+  border-radius: 50%
+}
+
+nav>a>img.avatar:hover {
+
+  border: 1px solid grey;
+}
+
+/* nav.navbar.small {
+  background-color: ghostwhite;
+  border: 3px dotted red;
+} */
+
+/* nav.navbar a,
+nav.navbar div > label,
+nav.navbar div > a {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  font-family: "Montserrat-Bold", sans-serif;
   text-decoration: none;
   font-weight: bold;
-  color: #323232;
+  color: ghostwhite;
   text-transform: uppercase;
-  width: 80px;
+  width: fit-content;
   height: fit-content;
+  text-shadow: var(--textShade01);
 }
+
+nav.navbar a:hover,
+nav.navbar label:hover {
+  color: grey;
+}
+nav.navbar a.pending {
+  color: var(--secondary);
+}
+nav.navbar a.active {
+  color: var(--primary);
+} */

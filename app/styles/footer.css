@@ -1,0 +1,28 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 40px 0;
+}
+footer > .platforms {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 2;
+  gap: 20px;
+}
+
+footer > div.platforms > span {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+footer > div.platforms > span > img {
+  width: 80px;
+}
