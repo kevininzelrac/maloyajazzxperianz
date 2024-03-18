@@ -1,4 +1,9 @@
-const withPriviledges = (user: any, where: any) => {
+import { Role, User } from "@prisma/client";
+
+const withPriviledges = (
+  user: { id: User["id"]; role: Role } | null,
+  where: any
+) => {
   return user && user.role === "ADMIN"
     ? {
         ...where,
