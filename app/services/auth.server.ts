@@ -18,15 +18,12 @@ export default async function auth(request: Request): Promise<authType> {
 
   if (!accessToken) return await destroy(user);
 
-  const verifiedAccess = verify(
-    accessToken,
-    process.env.ACCESS_SECRET as string
-  );
+  const verifiedAccess = verify(accessToken, process.env.ACCESS_SECRET);
 
   if (!verifiedAccess) {
     const verifiedRefresh = verify(
       user.get("refreshToken"),
-      process.env.REFRESH_SECRET as string
+      process.env.REFRESH_SECRET
     );
 
     if (!verifiedRefresh) return await destroy(user);
@@ -38,10 +35,7 @@ export default async function auth(request: Request): Promise<authType> {
 
     if (!matchToken) return await destroy(user);
 
-    const verifiedMatch: any = verify(
-      matchToken,
-      process.env.REFRESH_SECRET as string
-    );
+    const verifiedMatch: any = verify(matchToken, process.env.REFRESH_SECRET);
 
     if (!verifiedMatch) return await destroy(user);
 
@@ -49,7 +43,7 @@ export default async function auth(request: Request): Promise<authType> {
 
     const newAccessToken = jwt.sign(
       { id, email, firstname, avatar },
-      process.env.ACCESS_SECRET as string,
+      process.env.ACCESS_SECRET,
       { expiresIn: process.env.ACCESS_TOKEN_DURATION }
     );
 
@@ -105,14 +99,27 @@ export const getRefreshToken = async (
   userId: string,
   token: string
 ): Promise<string | null> => {
-  const refresh = await prisma.refreshToken.findFirst({
-    where: {
-      userId: userId,
-      token: token,
-      revoked: false,
-    },
-  });
+  const refresh = await prisma.refreshToken
+    .findUnique({
+      where: {
+        token,
+      },
+    })
+    .catch((error) => {
+      console.error(error);
+      return null;
+    });
+  //TODO: @@unique([userId, token])
+
+  // const refresh = await prisma.refreshToken.findFirst({
+  //   where: {
+  //     userId: userId,
+  //     token: token,
+  //     revoked: false,
+  //   },
+  // });
   if (!refresh) return null;
+  //console.log("refresh", refresh);
 
   return refresh!.token;
 };
