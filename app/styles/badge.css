@@ -1,24 +1,26 @@
 div.badge {
-  width: fit-content;
+  min-width: fit-content;
   height: fit-content;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
+  gap: 0.2rem;
   /* margin: 0.6em; */
 }
 
 div.badge > img {
   width: 40px;
   height: auto;
-  border-radius: 50%;
-  margin: 3px;
+  /* border-radius: 50%; */
+  margin-right: 0.2rem;
 }
 
-div.badge > span {
+div.badge > div {
+  width: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  text-shadow: var(--textShade01);
 }

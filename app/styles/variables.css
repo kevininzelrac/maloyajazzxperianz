@@ -1,13 +1,348 @@
+:root {
+  /* --width: clamp(340px, 70%, 700px); */
+
+  --width: 100%;
+  --height: 80px;
+  --padding: 1rem;
+  --margin: 1rem;
+  --gap: 1rem;
+  --border-radius: 0.4rem;
+
+  --primary: #cc3333;
+  --secondary: #7f2222;
+
+  /* --black: #121212; */
+  --black: #000000;
+  --darkGrey: #212121;
+  --grey: #323232;
+  --mediumGrey: #535353;
+  --lightGrey: #b3b3b3;
+
+  --gradient01: linear-gradient(180deg, #191919 0%, #101010 100%);
+  --gradient02: linear-gradient(
+    0deg,
+    rgb(33, 33, 33, 10) 0%,
+    rgb(40, 40, 40, 10) 100%
+  );
+
+  --boxShadow01: 0px 0px 10px 0px #000000;
+  --textShadow01: 1px 1px 3px #121212;
+}
+
 /* @import url("https://fonts.googleapis.com/css2?family=Audiowide&family=Gruppo&family=Major+Mono+Display&family=Orbitron&display=swap"); */
 
-:root {
-  --width: clamp(340px, 70%, 700px);
-  /* --bkgrd01: #323232b3; */
-  --bkgrd01: #000000;
-  --bkgrd: #000000;
-  --primary: #cc3333;
-  --secondary: #ffd700;
-  --dark: #323232;
-  --grey: "#898F9C";
-  --textShade01: 1px 1px 3px #323232;
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
+.flex-5 {
+  flex: 5;
+}
+
+.flex-6 {
+  flex: 6;
+}
+
+.flex-7 {
+  flex: 7;
+}
+
+.flex-8 {
+  flex: 8;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}
+
+.justify-self-start {
+  justify-self: flex-start;
+}
+
+.justify-self-center {
+  justify-self: center;
+}
+
+.justify-self-end {
+  justify-self: flex-end;
+}
+
+.gap-05 {
+  gap: 0.5rem;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 2rem;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.with-75 {
+  width: 75%;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.min-width-100 {
+  min-width: 100px;
+}
+
+.min-width-200 {
+  min-width: 200px;
+}
+
+.min-width-300 {
+  min-width: 300px;
+}
+
+.min-width-400 {
+  min-width: 400px;
+}
+
+.min-width-500 {
+  min-width: 500px;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.height-fit {
+  height: fit-content;
+}
+
+.min-height-100 {
+  min-height: 100px;
+}
+
+.min-height-200 {
+  min-height: 200px;
+}
+
+.min-height-300 {
+  min-height: 300px;
+}
+
+.min-height-400 {
+  min-height: 400px;
+}
+
+.min-height-500 {
+  min-height: 500px;
+}
+
+.margin-05 {
+  margin: 0.5rem;
+}
+
+.margin-1 {
+  margin: 1rem;
+}
+
+.padding-05 {
+  padding: 0.5rem;
+}
+
+.padding-1 {
+  padding: 1rem;
+}
+
+.border-radius-05 {
+  border-radius: 0.5rem;
+}
+
+.border-radius-1 {
+  border-radius: 1rem;
+}
+
+.border-radius-2 {
+  border-radius: 2rem;
+}
+
+.bkgrd-black {
+  background: black;
+}
+
+.bkgrd-gradient01 {
+  background: var(--gradient01);
+}
+
+.color-ghostwhite {
+  color: ghostwhite;
+}
+
+.color-primary {
+  color: var(--primary);
+}
+
+.color-secondary {
+  color: var(--secondary);
+}
+
+.border-red-1 {
+  border: 1px solid red;
+}
+
+.border-blue-1 {
+  border: 1px solid blue;
+}
+
+.border-green-1 {
+  border: 1px solid green;
+}
+
+.border-pink-1 {
+  border: 1px solid pink;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.top-1 {
+  top: 1rem;
+}
+
+.top-2 {
+  top: 2rem;
+}
+
+.top-3 {
+  top: 3rem;
+}
+
+.top-4 {
+  top: 100px;
+}
+
+.top-50 {
+  top: 50%;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.bottom-1 {
+  bottom: 1rem;
+}
+
+.bottom-50 {
+  bottom: 50%;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.left-1 {
+  left: 1rem;
+}
+
+.left-50 {
+  left: 50%;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.right-1 {
+  right: 1rem;
+}
+
+.right-50 {
+  right: 50%;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }

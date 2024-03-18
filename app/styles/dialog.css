@@ -8,7 +8,7 @@ dialog {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   background-color: transparent;
   border: none;
   overflow: hidden;
@@ -20,7 +20,7 @@ dialog > span.opaque {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: var(--dark);
+  background-color: var(--black);
   z-index: 0;
   opacity: 0.7;
 }

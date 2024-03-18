@@ -1,0 +1,91 @@
+article {
+  height: fit-content;
+  background: var(--gradient01);
+  color: ghostwhite;
+  display: flex;
+  flex-direction: row;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+article > figure {
+  height: 330px;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+}
+
+article > figure > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+article > section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--padding);
+  gap: 1rem;
+}
+
+article > section > header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-self: flex-start;
+  gap: 0.5rem;
+}
+
+article > section > header > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+article > section > header > span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+article > section > header > span > time {
+  display: flex;
+  align-items: center;
+}
+
+article > section > header > span > p {
+  display: flex;
+  align-items: center;
+}
+
+article > section > p {
+  flex: 8;
+  width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+article > section > footer {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 870px) {
+  article {
+    flex-direction: column;
+  }
+  article > figure {
+    flex: 1;
+    height: 30%;
+    aspect-ratio: 16/9;
+  }
+}

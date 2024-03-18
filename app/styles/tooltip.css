@@ -1,0 +1,19 @@
+[data-tooltip]::after {
+  position: absolute;
+  content: attr(data-tooltip);
+  display: none;
+  background: var(--grey);
+  color: ghostwhite;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: small;
+  opacity: 0;
+  transition: opacity 200ms ease 400ms;
+  z-index: 2;
+}
+
+[data-tooltip]:hover::after {
+  display: block;
+  opacity: 1;
+}
