@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { useSubmit } from "@remix-run/react";
 
 export default function Buy({
   item,
@@ -7,13 +7,21 @@ export default function Buy({
   item: string;
   amount: number;
 }) {
+  const submit = useSubmit();
   return (
-    <Form method="post" action="/api/checkout">
-      <input type="hidden" name="item" value={item} />
-      <input type="hidden" name="amount" value={amount} />
-      <button type="submit" className="primary">
-        Buy
-      </button>
-    </Form>
+    <button
+      data-primary
+      onClick={() => {
+        submit(
+          { item, amount },
+          {
+            action: "/api/checkout",
+            method: "post",
+          }
+        );
+      }}
+    >
+      Buy
+    </button>
   );
 }
