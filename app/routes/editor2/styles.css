@@ -1,0 +1,13 @@
+main {
+  display: flex;
+  gap: 2rem;
+  width: 200%;
+}
+
+main > article {
+  width: 50%;
+}
+
+main > aside {
+  width: 50%;
+}
