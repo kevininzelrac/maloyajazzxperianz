@@ -1,27 +1,18 @@
-import { BsPaypal } from "react-icons/bs";
 import { useState } from "react";
 import Dialog from "~/components/dialog";
-import ErrorBoundary from "~/components/errorBoundary";
-
-export { ErrorBoundary };
 
 export default function Shop() {
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState(false);
   const redirectUrl =
     "https://www.helloasso-sandbox.com/associations/le-charbon/boutiques/test/widget";
 
   return (
-    <main
-      style={{
-        width: "100%",
-        height: "fit-content",
-      }}
-    >
-      <button onClick={() => setDisplay(redirectUrl)}>
-        <BsPaypal />
+    <>
+      <button data-primary onClick={() => setDisplay(true)}>
+        visit the Shop
       </button>
       {display ? (
-        <Dialog handleClick={() => setDisplay("")}>
+        <Dialog handleClick={() => setDisplay(false)}>
           <iframe
             id="haWidget"
             //allowTransparency={true}
@@ -31,6 +22,6 @@ export default function Shop() {
           ></iframe>
         </Dialog>
       ) : null}
-    </main>
+    </>
   );
 }
