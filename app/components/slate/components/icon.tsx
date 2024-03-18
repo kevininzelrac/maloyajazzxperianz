@@ -1,25 +1,27 @@
-import { MdUndo } from "react-icons/md";
-import { MdRedo } from "react-icons/md";
-import { MdFormatBold } from "react-icons/md";
-import { MdFormatItalic } from "react-icons/md";
-import { MdFormatUnderlined } from "react-icons/md";
-import { MdCode } from "react-icons/md";
-import { LuHeading2 } from "react-icons/lu";
-import { LuHeading3 } from "react-icons/lu";
-import { LuHeading4 } from "react-icons/lu";
-import { MdFormatQuote } from "react-icons/md";
-import { MdFormatListBulleted } from "react-icons/md";
-import { MdFormatListNumbered } from "react-icons/md";
-import { MdFormatAlignLeft } from "react-icons/md";
-import { MdFormatAlignRight } from "react-icons/md";
-import { MdFormatAlignCenter } from "react-icons/md";
-import { MdFormatAlignJustify } from "react-icons/md";
-import { MdAddLink } from "react-icons/md";
-import { MdLinkOff } from "react-icons/md";
-import { MdImage } from "react-icons/md";
-import { MdHideImage } from "react-icons/md";
-import { FaSpotify, FaYoutube } from "react-icons/fa";
-import { FaRegCircle } from "react-icons/fa";
+import {
+  MdUndo,
+  MdRedo,
+  MdFormatBold,
+  MdFormatItalic,
+  MdFormatUnderlined,
+  MdCode,
+  MdFormatQuote,
+  MdFormatListBulleted,
+  MdFormatListNumbered,
+  MdFormatAlignLeft,
+  MdFormatAlignRight,
+  MdFormatAlignCenter,
+  MdFormatAlignJustify,
+  MdAddLink,
+  MdLinkOff,
+  MdImage,
+  MdHideImage,
+} from "react-icons/md";
+
+import { LuHeading2, LuHeading3, LuHeading4 } from "react-icons/lu";
+
+import { FaSpotify, FaYoutube, FaRegCircle } from "react-icons/fa";
+
 import { BsTextareaResize } from "react-icons/bs";
 
 const Icon = ({ type }: { type: string }) => {
@@ -43,6 +45,7 @@ const Icon = ({ type }: { type: string }) => {
     case "h4":
       return <LuHeading4 />;
     case "paragraph":
+      //return <BiParagraph />;
       return <Paragraph />;
     case "blockquote":
       return <MdFormatQuote />;
@@ -81,5 +84,9 @@ const Icon = ({ type }: { type: string }) => {
 export default Icon;
 
 const Paragraph = () => (
-  <span style={{ fontSize: ".8em", fontWeight: "bold" }}>P</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+    <text x="5" y="15" fontFamily="Verdana" fontSize="40" fill="currentColor">
+      P
+    </text>
+  </svg>
 );

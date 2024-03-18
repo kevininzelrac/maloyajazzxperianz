@@ -1,6 +1,6 @@
 import { Slate, Editable, withReact } from "slate-react";
 import { createEditor, type Descendant } from "slate";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { RenderElement, RenderLeaf } from "./render";
 import { LinksFunction } from "@remix-run/node";
 import { useLocation } from "@remix-run/react";
@@ -11,13 +11,20 @@ import slate from "./slate.css";
 
 export let links: LinksFunction = () => [{ rel: "stylesheet", href: slate }];
 
-export default function Editor({ children, onChange }: any) {
+export default function Editor({
+  children,
+  onChange,
+}: {
+  children: string;
+  onChange: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { pathname } = useLocation();
-  const path = pathname.replace("/Edit", "");
 
-  useEffect(() => {
-    localStorage.getItem("slate" + path) ? onChange(true) : onChange(false);
-  }, []);
+  //useEffect(() => {
+  //  Boolean(localStorage.getItem("slate" + pathname))
+  //    ? onChange(true)
+  //    : onChange(false);
+  //}, []);
 
   const initialValue: Descendant[] = useMemo(() => {
     if (children.includes("type")) {
@@ -35,12 +42,12 @@ export default function Editor({ children, onChange }: any) {
 
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   return (
-    <>
+    <div className="slate">
       <Slate
         editor={editor}
         initialValue={
-          localStorage.getItem("slate" + path)
-            ? JSON.parse(localStorage.getItem("slate" + path) as string)
+          localStorage.getItem("slate" + pathname)
+            ? JSON.parse(localStorage.getItem("slate" + pathname)!)
             : initialValue
         }
         onChange={(value) => {
@@ -50,10 +57,10 @@ export default function Editor({ children, onChange }: any) {
 
           if (isAstChange) {
             if (JSON.stringify(value) !== JSON.stringify(initialValue)) {
-              localStorage.setItem("slate" + path, JSON.stringify(value));
+              localStorage.setItem("slate" + pathname, JSON.stringify(value));
               onChange(true);
             } else {
-              localStorage.removeItem("slate" + path);
+              localStorage.removeItem("slate" + pathname);
               onChange(false);
             }
           }
@@ -70,6 +77,6 @@ export default function Editor({ children, onChange }: any) {
           }}
         />
       </Slate>
-    </>
+    </div>
   );
 }

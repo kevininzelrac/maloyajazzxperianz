@@ -21,12 +21,14 @@ export default function ReadOnly({ children }: any) {
 
   const [editor] = useState(() => withReact(withHistory(createEditor())));
   return (
-    <Slate editor={editor} initialValue={initialValue}>
-      <Editable
-        readOnly
-        renderElement={RenderElement}
-        renderLeaf={RenderLeaf}
-      />
-    </Slate>
+    <div className="slate">
+      <Slate editor={editor} initialValue={initialValue}>
+        <Editable
+          readOnly
+          renderElement={RenderElement}
+          renderLeaf={RenderLeaf}
+        />
+      </Slate>
+    </div>
   );
 }

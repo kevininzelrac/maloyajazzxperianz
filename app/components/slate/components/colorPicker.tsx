@@ -28,7 +28,7 @@ export default function ColorPicker() {
         className="colorPicker"
         type="color"
         value={currentColor}
-        style={{ width: "100%", height: "100%", userSelect: "none" }}
+        style={{ userSelect: "none" }}
         onChange={(e) => addColor(e)}
       />
     </button>
