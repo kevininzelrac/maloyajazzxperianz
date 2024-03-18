@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 export default function Dialog({
   children,
   handleClick,
@@ -6,14 +8,19 @@ export default function Dialog({
   handleClick: () => void;
 }) {
   return (
-    <dialog>
-      <span className="opaque" onClick={handleClick}></span>
-      <div>
-        <button className="close" onClick={handleClick}>
-          x
-        </button>
-        {children}
-      </div>
-    </dialog>
+    <>
+      {createPortal(
+        <dialog>
+          <span className="opaque" onClick={handleClick}></span>
+          <div>
+            <button className="close" onClick={handleClick}>
+              x
+            </button>
+            {children}
+          </div>
+        </dialog>,
+        document.body
+      )}
+    </>
   );
 }
