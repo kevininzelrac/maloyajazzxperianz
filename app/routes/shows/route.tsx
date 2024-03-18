@@ -1,11 +1,12 @@
 import { LinksFunction, MetaFunction } from "@remix-run/node";
 
-import styles from "./styles.css";
 import Transition from "~/components/transition";
-import loader from "./loader";
 
-export { loader };
+import styles from "./styles.css";
 export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+
+import loader from "./loader";
+export { loader };
 
 export const meta: MetaFunction = () => [
   { title: "Shows" },
@@ -17,10 +18,8 @@ export default function Shows() {
     <Transition>
       <main>
         <article>
-          <section>
-            <h3>Show</h3>
-            <strong>TODO</strong>
-          </section>
+          <h3>Show</h3>
+          <strong>TODO</strong>
         </article>
       </main>
     </Transition>

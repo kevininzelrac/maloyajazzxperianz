@@ -1,7 +1,7 @@
 import sleep from "~/utils/sleep";
 
 const loader = async () => {
-  await sleep;
+  await sleep();
   return null;
 };
 export default loader;
