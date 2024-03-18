@@ -1,49 +1,52 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import withPriviledges from "./middlewares/withPriviledge";
 import auth from "./services/auth.server";
-import prisma from "./services/prisma.server";
+import db from "./db";
 
 const loader = async ({ request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  const user = id
-    ? await prisma.user.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          firstname: true,
-          lastname: true,
-          avatar: true,
-          role: true,
-        },
-      })
-    : null;
+  const user = await db.find.user({
+    where: { id },
+    select: { id: true, role: true, avatar: true },
+  });
 
-  const nav = await prisma.post.findMany({
-    where: withPriviledges(user, {
-      NOT: { OR: [{ type: "post" }, { category: "post" }] },
+  const nav = await db.find.posts({
+    where: withPriviledges(user.data, {
+      NOT: {
+        OR: [{ type: { title: "post" } }, { category: { title: "post" } }],
+      },
     }),
+    orderBy: { createdAt: "asc" },
     select: {
       title: true,
-      type: true,
-      category: true,
+      type: {
+        select: {
+          title: true,
+        },
+      },
+      category: {
+        select: {
+          title: true,
+        },
+      },
     },
-    orderBy: { createdAt: "asc" },
   });
 
   const recursive = (data: any, parent: string) =>
     data
-      .filter(({ category }: any) => category === parent)
+      .filter(({ category }: any) => category.title === parent)
       .map(({ title, type, category }: any) => ({
         title,
-        type,
-        category,
+        type: type.title,
+        category: category.title,
         children: recursive(data, title),
       }));
 
-  return json({ id, user, nav: recursive(nav, "page") }, { headers });
+  return json(
+    { id, user: user.data, nav: recursive(nav.data, "default") },
+    { headers }
+  );
 };
 
 export default loader;
