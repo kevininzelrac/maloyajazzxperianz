@@ -8,12 +8,12 @@ async function main() {
     update: {},
     create: {
       email: "kevin@prisma.io",
-      fullName: "Kevin The Dude",
+      fullname: "Kevin The Dude",
       firstname: "Kevin",
       lastname: "The Dude",
       avatar:
         "https://fastly.picsum.photos/id/962/200/200.jpg?hmac=XehF7z9JYkgC-2ZfSP05h7eyumIq9wNKUDoCLklIhr4",
-      Credential: {
+      credential: {
         create: {
           passwordHash: process.env.PWD_HASH,
         },
@@ -25,12 +25,12 @@ async function main() {
     update: {},
     create: {
       email: "sebastian@prisma.io",
-      fullName: "Sebastian eL Patron",
+      fullname: "Sebastian eL Patron",
       firstname: "Sebastian",
       lastname: "El Patron",
       avatar:
         "https://fastly.picsum.photos/id/249/200/200.jpg?hmac=75zqoHvrxGGVnJnS8h0gUzZ3zniIk6PggG38GjmyOto",
-      Credential: {
+      credential: {
         create: {
           passwordHash: process.env.PWD_HASH,
         },
@@ -38,8 +38,8 @@ async function main() {
     },
   });
 
-  const authorId = async (email: string) => {
-    const user = await prisma.user.findFirst({
+  const getAuthorId = async (email: string) => {
+    const user = await prisma.user.findUnique({
       where: {
         email: email,
       },
@@ -51,111 +51,95 @@ async function main() {
     return user.id;
   };
 
+  // Création des types
+  await prisma.type.createMany({
+    data: [{ title: "page" }, { title: "post" }, { title: "menu" }],
+  });
+  const types = await prisma.type.findMany();
+
+  // Création des catégories
+  await prisma.category.createMany({
+    data: [
+      { title: "default", typeTitle: "page" },
+      { title: "art", typeTitle: "post" },
+      { title: "music", typeTitle: "post" },
+      { title: "travels", typeTitle: "post" },
+      { title: "tech", typeTitle: "post" },
+    ],
+  });
+  const categories = await prisma.category.findMany();
+
   await prisma.post.createMany({
     data: [
       {
-        type: "category",
-        title: "Art",
-        content: "Art cat",
-        category: "post",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-01-01T10:00:00"),
-      },
-      {
-        type: "category",
-        title: "Music",
-        content: "Music cat",
-        category: "post",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-01-01T10:00:00"),
-      },
-      {
-        type: "category",
-        title: "Remix",
-        content: "Remix cat",
-        category: "post",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-01-01T10:00:00"),
-      },
-      {
-        type: "post",
         title: "Introduction to JavaScript",
         content: "Lorem ipsum...",
-        category: "Art",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-01-01T10:00:00"),
+        authorId: await getAuthorId("kevin@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "tech",
       },
       {
-        type: "post",
         title: "The wonders of the universe",
         content: "Lorem ipsum...",
-        category: "Art",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-02-15T14:30:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "travels",
       },
       {
-        type: "post",
         title: "Exploring new places",
         content: "Lorem ipsum...",
-        category: "Art",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-03-10T08:45:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "travels",
       },
       {
-        type: "post",
         title: "Cooking adventures",
-        authorId: await authorId("kevin@prisma.io"),
-        category: "Music",
+        authorId: await getAuthorId("kevin@prisma.io"),
         content: "Lorem ipsum...",
-        createdAt: new Date("2023-04-05T18:20:00"),
+        typeTitle: "post",
+        categoryTitle: "art",
       },
       {
-        type: "post",
         title: "Staying fit and healthy",
         content: "Lorem ipsum...",
-        category: "Music",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-05-20T12:15:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "music",
       },
       {
-        type: "post",
         title: "The power of music",
         content: "Lorem ipsum...",
-        category: "Music",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-06-30T22:00:00"),
+        authorId: await getAuthorId("kevin@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "music",
       },
       {
-        type: "post",
         title: "Thrilling sports moments",
         content: "Lorem ipsum...",
-        category: "Remix",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-07-12T16:10:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "art",
       },
       {
-        type: "post",
         title: "Fashion trends of the season",
         content: "Lorem ipsum...",
-        category: "Remix",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-08-25T09:30:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "art",
       },
       {
-        type: "post",
         title: "Exploring the world of art",
         content: "Lorem ipsum...",
-        category: "Remix",
-        authorId: await authorId("kevin@prisma.io"),
-        createdAt: new Date("2023-09-18T17:45:00"),
+        authorId: await getAuthorId("kevin@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "art",
       },
       {
-        type: "post",
         title: "Connecting with nature",
         content: "Lorem ipsum...",
-        category: "Art",
-        authorId: await authorId("sebastian@prisma.io"),
-        createdAt: new Date("2023-10-05T11:55:00"),
+        authorId: await getAuthorId("sebastian@prisma.io"),
+        typeTitle: "post",
+        categoryTitle: "travels",
       },
     ],
   });
