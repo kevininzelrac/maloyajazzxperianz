@@ -13,7 +13,7 @@ const signGoogleUser = async (
     update: { avatar: avatar },
     create: {
       email: email,
-      fullName: firstname + " " + lastname,
+      fullname: firstname + " " + lastname,
       firstname: firstname,
       lastname: lastname,
       avatar: avatar,
