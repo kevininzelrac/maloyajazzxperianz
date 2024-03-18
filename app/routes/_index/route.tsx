@@ -1,38 +1,37 @@
-import { LinksFunction, MetaFunction } from "@remix-run/node";
-import { useLocation } from "@remix-run/react";
-import image from "public/img/mon-pei01.jpg";
-import styles from "./styles.css";
+import { MetaFunction } from "@remix-run/node";
 import sleep from "~/utils/sleep";
 import Transition from "~/components/transition";
-
-import ErrorBoundary from "../../components/errorBoundary";
 import Buy from "~/components/buy";
 
+import image from "public/img/mon-pei02.jpg";
+
+import ErrorBoundary from "~/components/errorBoundary";
+import Shop from "~/components/shop";
 export { ErrorBoundary };
 
 export const meta: MetaFunction = () => [
   { title: "Home" },
   { name: "description", content: "Home" },
 ];
-export let links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const loader = async () => {
-  await sleep;
+  await sleep();
   return null;
 };
 
 export default function Index() {
-  const { pathname } = useLocation();
   return (
-    <Transition key={pathname}>
+    <Transition>
       <main>
         <article>
           <figure>
             <img src={image} />
-            <span>Mon Pei</span>
+            <figcaption>Mon Pei</figcaption>
           </figure>
           <section>
-            <h4>Mon Pei</h4>
+            <header>
+              <h2>Mon Pei</h2>
+            </header>
             <p>
               Le Lorem Ipsum est simplement du faux texte employé dans la
               composition et la mise en page avant impression. Le Lorem Ipsum
@@ -44,14 +43,13 @@ export default function Index() {
               Il a été popularisé dans les années 1960 grâce à la vente de
               feuilles Letraset contenant des passages du Lorem Ipsum.
             </p>
-            <Buy item="article 01" amount={1000} />
+            <footer>
+              <Buy item="article 01" amount={1000} />
+              or
+              <Shop />
+            </footer>
           </section>
         </article>
-        <link
-          rel="alternate"
-          type="application/json+oembed"
-          href="https://open.spotify.com/oembed?url=https%3A%2F%2Fopen.spotify.com%2Fshow%2F5eXZwvvxt3K2dxha3BSaAe"
-        />
 
         {/* <section>
           <iframe
