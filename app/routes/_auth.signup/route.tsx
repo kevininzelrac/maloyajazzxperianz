@@ -41,8 +41,7 @@ export default function SignUp() {
         />
 
         <button
-          type="submit"
-          className="primary"
+          data-primary
           disabled={password === "" || confirm === "" || password !== confirm}
           style={{ opacity: password === confirm ? "1" : ".6" }}
         >
