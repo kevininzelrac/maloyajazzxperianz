@@ -14,7 +14,7 @@ export const userSession = createCookieSessionStorage({
 
 export const newUserSession = createCookieSessionStorage({
   cookie: {
-    name: "user",
+    name: "newUser",
     httpOnly: true,
     //maxAge: 24 * 60 * 60,
     path: "/",

@@ -18,37 +18,39 @@ const Authors = ({
       {authors.error ? (
         <span data-error>{authors.error.message}</span>
       ) : (
-        authors.data.map(({ id, firstname, _count }) => (
-          <div key={id}>
-            <a
-              href=""
-              onClick={(e) => {
-                e.preventDefault();
-                if (searchParams.get("author") === firstname) {
-                  setSearchParams((prev) => {
-                    prev.delete("author");
-                    return prev;
-                  });
-                } else {
-                  setSearchParams((prev) => {
-                    prev.set("author", firstname);
-                    return prev;
-                  });
+        authors.data
+          .filter(({ _count }) => _count.posts > 0)
+          .map(({ id, firstname, _count }) => (
+            <div key={id}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (searchParams.get("author") === firstname) {
+                    setSearchParams((prev) => {
+                      prev.delete("author");
+                      return prev;
+                    });
+                  } else {
+                    setSearchParams((prev) => {
+                      prev.set("author", firstname);
+                      return prev;
+                    });
+                  }
+                }}
+                className={
+                  searchParams.get("author") === firstname
+                    ? state === "loading"
+                      ? "pending"
+                      : "active"
+                    : ""
                 }
-              }}
-              className={
-                searchParams.get("author") === firstname
-                  ? state === "loading"
-                    ? "pending"
-                    : "active"
-                  : ""
-              }
-            >
-              {firstname}
-            </a>
-            {/* <span>{_count.posts}</span> */}
-          </div>
-        ))
+              >
+                {firstname}
+              </a>
+              {/* <span>{_count.posts}</span> */}
+            </div>
+          ))
       )}
     </nav>
   );

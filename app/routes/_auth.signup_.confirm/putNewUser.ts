@@ -11,11 +11,11 @@ const putNewUser = async (
     update: {},
     create: {
       email: email,
-      fullName: firstname + " " + lastname,
+      fullname: firstname + " " + lastname,
       firstname: firstname,
       lastname: lastname,
       avatar: "https://picsum.photos/50",
-      Credential: {
+      credential: {
         create: {
           passwordHash: passwordHash,
         },

@@ -20,9 +20,7 @@ export default function ConfirmSignUp() {
       <Form method="post">
         <label>{email}</label>
         <input type="text" name="code" placeholder="verification code" />
-        <button className="primary" type="submit">
-          Submit
-        </button>
+        <button data-primary>Submit</button>
       </Form>
     </>
   );

@@ -4,15 +4,15 @@ import bcrypt from "bcryptjs";
 import putNewUser from "./putNewUser";
 
 const action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const code = String(formData.get("code"));
+
   const _newUser = await newUserSession.getSession(
     request.headers.get("Cookie")
   );
   const newUser = _newUser.get("newUser");
-  const { code } = Object.fromEntries(await request.formData()) as {
-    code: string;
-  };
 
-  const match = await bcrypt.compare(code, newUser.code);
+  const match = await bcrypt.compare(code, String(newUser.code));
   if (!match) throw new Error("Wooops Something Weird just happened !!");
 
   try {

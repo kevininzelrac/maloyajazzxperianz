@@ -17,7 +17,8 @@
     "@vercel/blob": "^0.15.1",
     "isbot": "^3.6.8",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^6.9.7",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "@remix-run/css-bundle": "^2.3.1",
@@ -30,7 +31,6 @@
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
     "eslint": "^8.38.0",
     "prisma": "^5.9.1",

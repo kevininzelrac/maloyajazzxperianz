@@ -38,7 +38,7 @@ model Credential {
   updatedAt     DateTime  @updatedAt
   passwordHash  String?
   userId        String    @db.Uuid @unique
-  user          User      @relation(fields: [userId], references: [id])
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model RefreshToken {
@@ -46,7 +46,7 @@ model RefreshToken {
   userId  String  @db.Uuid
   token   String  @unique
   revoked Boolean @default(false)
-  user    User    @relation(fields: [userId], references: [id])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Post {

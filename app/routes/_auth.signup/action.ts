@@ -9,9 +9,7 @@ import { newUserSession } from "~/services/session.server";
 //import mail from "./mail";
 
 const action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
-  const { firstname, lastname, email, password } = Object.fromEntries(
-    await request.formData()
-  ) as { firstname: string; lastname: string; email: string; password: string };
+  const formData = await request.formData();
 
   const newUser = await newUserSession.getSession(
     request.headers.get("Cookie")
@@ -20,11 +18,11 @@ const action: ActionFunction = async ({ request }: ActionFunctionArgs) => {
   const code = verificationCode();
 
   newUser.set("newUser", {
-    firstname,
-    lastname,
-    email,
+    firstname: String(formData.get("firstname")),
+    lastname: String(formData.get("lastname")),
+    email: String(formData.get("email")),
     code: await bcrypt.hash(code, 10),
-    passwordHash: await bcrypt.hash(password, 10),
+    passwordHash: await bcrypt.hash(String(formData.get("password")), 10),
   });
 
   try {
@@ -56,3 +54,13 @@ function verificationCode() {
   return "0000";
 }
 export default action;
+
+function validateEmail(email: string | undefined): boolean {
+  if (undefined === email) {
+    return false;
+  }
+  // eslint-disable-next-line no-useless-escape
+  const mailformat =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return email.match(mailformat) ? true : false;
+}

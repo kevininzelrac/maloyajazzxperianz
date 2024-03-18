@@ -24,7 +24,7 @@ export default {
     //"react-dom",
     //"scheduler",
     //
-    "bcryptjs",
+    //"bcryptjs",
     //
   ],
 };
