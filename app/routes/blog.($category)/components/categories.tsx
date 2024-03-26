@@ -1,28 +1,29 @@
-import { NavLink, useParams } from "@remix-run/react";
-import { SerializeFrom } from "@remix-run/node";
+import { NavLink, useLoaderData, useParams } from "@remix-run/react";
+import Delete from "~/components/tools/delete";
+import usePriviledges from "~/hooks/usePriviledges";
 import loader from "../loader";
+import Add from "~/components/tools/add";
 
-const Categories = ({
-  user,
-  categories,
-}: {
-  user: SerializeFrom<typeof loader>["user"];
-  categories: SerializeFrom<typeof loader>["categories"];
-}) => {
+const Categories = () => {
+  const { user, categories } = useLoaderData<typeof loader>();
+  const { isAdmin, isEditor } = usePriviledges(user);
   const params = useParams();
-
-  //let isAdmin = user.data?.role === "ADMIN";
 
   return (
     <nav>
       <header>
         <h3>Categories</h3>
+        {(isAdmin || isEditor) && <Add type="category" />}
       </header>
       {categories.error ? (
-        <span data-error>{categories.error.message}</span>
+        <div data-error>{categories.error.message}</div>
+      ) : !categories.data.length ? (
+        <div data-info>Category list empty</div>
       ) : (
         categories.data
-          .filter(({ _count }) => _count.posts > 0)
+          .filter(({ _count }) =>
+            isAdmin || isEditor ? _count.posts >= 0 : _count.posts > 0
+          )
           .map(({ id, title, _count }) => (
             <div key={id}>
               <NavLink
@@ -30,8 +31,11 @@ const Categories = ({
               >
                 {title}
               </NavLink>
-              {/* {isAdmin && <Delete id={id} type="category" />} */}
-              {/* <span>{_count.posts}</span> */}
+              <span>
+                <small>{_count.posts}</small>
+                {(isAdmin || isEditor) && <Add type="post" category={title} />}
+                {isAdmin && <Delete id={id} type="category" />}
+              </span>
             </div>
           ))
       )}

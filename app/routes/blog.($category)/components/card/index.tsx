@@ -24,7 +24,7 @@ const Card = ({
         <header>
           <div>
             <Badge author={post.author} />
-            {user.data && <Tools user={user.data} data={post} />}
+            {user && <Tools user={user} data={post} />}
           </div>
           <span>
             <p>{post.category.title}</p>

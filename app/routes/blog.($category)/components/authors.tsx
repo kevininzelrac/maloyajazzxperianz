@@ -1,12 +1,12 @@
-import { SerializeFrom } from "@remix-run/node";
-import { useNavigation, useSearchParams } from "@remix-run/react";
+import {
+  useLoaderData,
+  useNavigation,
+  useSearchParams,
+} from "@remix-run/react";
 import loader from "../loader";
 
-const Authors = ({
-  authors,
-}: {
-  authors: SerializeFrom<typeof loader>["authors"];
-}) => {
+const Authors = () => {
+  const { authors } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const { state } = useNavigation();
 
@@ -16,7 +16,9 @@ const Authors = ({
         <h3>Authors</h3>
       </header>
       {authors.error ? (
-        <span data-error>{authors.error.message}</span>
+        <div data-error>{authors.error.message}</div>
+      ) : !authors.data.length ? (
+        <div data-info>Author List Empty</div>
       ) : (
         authors.data
           .filter(({ _count }) => _count.posts > 0)
@@ -48,7 +50,9 @@ const Authors = ({
               >
                 {firstname}
               </a>
-              {/* <span>{_count.posts}</span> */}
+              <span>
+                <small>{_count.posts}</small>
+              </span>
             </div>
           ))
       )}
