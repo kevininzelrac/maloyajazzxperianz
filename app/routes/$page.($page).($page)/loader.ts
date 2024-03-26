@@ -1,22 +1,27 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import auth from "~/services/auth.server";
-import db from "~/db";
+import prisma from "~/services/prisma.server";
 
 const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
   const user = id
-    ? await db.find.user({
-        where: { id },
-        select: { id: true, role: true },
-      })
+    ? await prisma.user
+        .findUnique({
+          where: { id },
+          select: {
+            id: true,
+            role: true,
+          },
+        })
+        .catch(() => null)
     : null;
 
-  const page = await db.find.post({
+  const page = await prisma.post.findUnique({
     where: {
       typeTitle: "page",
       categoryTitle: "default",
-      title: params.page!,
+      title: params.page,
     },
     select: {
       id: true,
@@ -45,6 +50,7 @@ const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     },
   });
+  if (!page) throw json(null, { status: 404, statusText: "Page Not Found" });
 
   return json({ user, page }, { headers });
 };

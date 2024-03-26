@@ -29,30 +29,26 @@ export default function Index() {
     <Transition>
       <main key={key}>
         <article>
-          {page.error ? (
-            <span data-error>{page.error.message}</span>
-          ) : (
-            <section>
-              <header>
-                <div>
-                  <Badge author={page.data.author} />
-                  {user?.data && <Tools user={user.data} data={page.data} />}
-                </div>
-                <span>
-                  <p>{page.data.category.title}</p>
-                  <time>
-                    <CiCalendar />
-                    {new Date(page.data.createdAt).toLocaleDateString("fr")}
-                  </time>
-                </span>
-                <h3>{page.data.title}</h3>
-              </header>
+          <section>
+            <header>
+              <div>
+                <Badge author={page.author} />
+                {user && <Tools user={user} data={page} />}
+              </div>
+              <span>
+                <p>{page.category.title}</p>
+                <time>
+                  <CiCalendar />
+                  {new Date(page.createdAt).toLocaleDateString("fr")}
+                </time>
+              </span>
+              <h3>{page.title}</h3>
+            </header>
 
-              <ClientOnly fallback={<Loading />}>
-                <ReadOnly>{page.data.content}</ReadOnly>
-              </ClientOnly>
-            </section>
-          )}
+            <ClientOnly fallback={<Loading />}>
+              <ReadOnly>{page.content}</ReadOnly>
+            </ClientOnly>
+          </section>
         </article>
       </main>
     </Transition>

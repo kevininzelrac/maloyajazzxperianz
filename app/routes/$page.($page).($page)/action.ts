@@ -1,27 +1,39 @@
 import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
-import db from "~/db";
+import withTryCatch from "~/middlewares/withTryCatch";
+import prisma from "~/services/prisma.server";
+//import { Type } from "@prisma/client";
 
 const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  //const type = formData.get("type") as Type["title"];
+  const id = String(formData.get("id"));
+  formData.delete("type");
+  formData.delete("id");
 
-  if (request.method === "POST")
+  if (request.method === "PATCH")
     return json(
-      await db.update.post({
-        where: {
-          id: String(formData.get("id")),
-        },
-        data: Object.fromEntries(formData),
-        select: { id: true, content: true },
-      })
+      await withTryCatch(
+        prisma.post.update({
+          where: {
+            id,
+          },
+          data: Object.fromEntries(formData),
+          select: { id: true, content: true },
+        }),
+        "Failed to update post"
+      )
     );
 
   if (request.method === "DELETE") {
-    const page = await db.delete.post({
-      where: { id: String(formData.get("id")) },
-      select: { id: true },
-    });
-    if (page.error) return json({ error: page.error.message }, { status: 400 });
-    return redirect("/");
+    const page = await withTryCatch(
+      prisma.post.delete({
+        where: { id },
+        select: { id: true },
+      }),
+      "Failed to delete page"
+    );
+    if (page.error) return json(page);
+    else return redirect("/");
   }
 
   return null;
