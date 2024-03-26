@@ -1,17 +1,14 @@
 import { useAsyncError } from "@remix-run/react";
 
 export default function ErrorElement() {
-  const error: any = useAsyncError();
+  const error = useAsyncError();
   return (
-    <p
-      style={{
-        width: "100%",
-        background: "ghostwhite",
-        padding: "1rem",
-        color: "crimson",
-      }}
-    >
-      {error.message}
-    </p>
+    <>
+      {error instanceof Error ? (
+        <span data-error>{error.message}</span>
+      ) : (
+        <span data-error>Unknown Error</span>
+      )}
+    </>
   );
 }
