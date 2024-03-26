@@ -1,18 +1,20 @@
 import { useNavigate } from "@remix-run/react";
 
 export default function Button({
+  to,
   children,
   ...props
 }: {
   children: React.ReactNode;
-  [key: string]: any;
+  to: string;
 }) {
-  const to = useNavigate();
+  const navigate = useNavigate();
   return (
     <button
       onClick={() => {
-        to(props.to);
+        navigate(to);
       }}
+      data-tooltip={to}
       {...props}
     >
       {children}
