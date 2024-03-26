@@ -1,14 +1,17 @@
-import { Post } from "@prisma/client";
+import { Post, Type } from "@prisma/client";
 import { useFetcher, useLocation } from "@remix-run/react";
 import { GiSandsOfTime } from "react-icons/gi";
 import { IoSaveSharp } from "react-icons/io5";
 
 const Update = ({
-  id,
+  post,
   isDraft,
   setIsDraft,
 }: {
-  id: Post["id"];
+  post: {
+    id: Post["id"];
+    type: { title: Type["title"] };
+  };
   isDraft: boolean;
   setIsDraft: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -19,10 +22,11 @@ const Update = ({
   const handleClick = () => {
     fetcher.submit(
       {
-        id: id,
+        type: post.type.title,
+        id: post.id,
         content: localStorage.getItem("slate" + pathname),
       },
-      { method: "POST" }
+      { method: "PATCH" }
     );
     localStorage.removeItem("slate" + pathname);
     setIsDraft(false);

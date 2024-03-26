@@ -1,17 +1,19 @@
 import { useFetcher } from "@remix-run/react";
 import { MdGroups, MdPublic } from "react-icons/md";
-import { Post, Audience as PostAudience, Role, User } from "@prisma/client";
+import { User, Role, Audience as prismaAudience } from "@prisma/client";
 import { GiSandsOfTime } from "react-icons/gi";
 import usePriviledges from "~/hooks/usePriviledges";
 
-const Audience2 = ({
+const Audience = ({
   user,
+  type,
   id,
   audience,
 }: {
   user: { id: User["id"]; role: Role };
-  id: Post["id"];
-  audience: PostAudience;
+  type: string;
+  id: string;
+  audience: prismaAudience;
 }) => {
   const { isAdmin } = usePriviledges(user);
   const fetcher = useFetcher();
@@ -21,10 +23,11 @@ const Audience2 = ({
   const handleClick = () => {
     fetcher.submit(
       {
-        id,
+        type,
+        id: id,
         audience: isPublic ? "PRIVATE" : "PUBLIC",
       },
-      { method: "POST" }
+      { method: "PATCH" }
     );
   };
 
@@ -47,4 +50,4 @@ const Audience2 = ({
     </button>
   );
 };
-export default Audience2;
+export default Audience;

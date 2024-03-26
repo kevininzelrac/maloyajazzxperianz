@@ -1,17 +1,19 @@
 import { useFetcher } from "@remix-run/react";
 import { MdOutlineUnpublished, MdPublishedWithChanges } from "react-icons/md";
-import { Status as PostStatus, Role, User } from "@prisma/client";
+import { User, Role, Status as prismaStatus } from "@prisma/client";
 import { GiSandsOfTime } from "react-icons/gi";
 import usePriviledges from "~/hooks/usePriviledges";
 
-const Status2 = ({
+const Status = ({
   user,
+  type,
   id,
   status,
 }: {
   user: { id: User["id"]; role: Role };
+  type: string;
   id: string;
-  status: PostStatus;
+  status: prismaStatus;
 }) => {
   const { isAdmin } = usePriviledges(user);
   const fetcher = useFetcher();
@@ -21,10 +23,11 @@ const Status2 = ({
   const handleClick = () => {
     fetcher.submit(
       {
-        id,
+        type,
+        id: id,
         status: isDraft ? "PUBLISHED" : "DRAFT",
       },
-      { method: "POST" }
+      { method: "PATCH" }
     );
   };
   return (
@@ -46,4 +49,4 @@ const Status2 = ({
     </button>
   );
 };
-export default Status2;
+export default Status;
