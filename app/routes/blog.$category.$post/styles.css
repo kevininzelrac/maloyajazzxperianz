@@ -6,3 +6,25 @@ main {
 main > article {
   flex-direction: column;
 }
+
+main > article > section.comments {
+  & form {
+    flex-direction: row;
+  }
+
+  & div.comment {
+    border-top: 1px solid var(--darkGrey);
+    border-left: 1px solid var(--darkGrey);
+    margin: 0.2rem;
+
+    & > header {
+      display: flex;
+      justify-content: space-between;
+    }
+    & > footer {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--gap);
+    }
+  }
+}
