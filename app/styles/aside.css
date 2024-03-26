@@ -32,9 +32,9 @@ main > aside {
       display: flex;
       /* flex-direction: row; */
       align-items: center;
-      /* justify-content: flex-start; */
+      justify-content: space-between;
       font-weight: bold;
-      flex-wrap: wrap;
+      /* flex-wrap: wrap; */
     }
 
     & > div {
@@ -43,6 +43,13 @@ main > aside {
       /* flex-direction: row; */
       align-items: center;
       justify-content: space-between;
+
+      & > span {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--gap) / 2);
+        color: var(--lightGrey);
+      }
     }
   }
 }

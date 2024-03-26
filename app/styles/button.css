@@ -6,7 +6,12 @@ button {
   background-color: var(--grey);
 }
 
-button:hover > * {
+button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+button:hover :not(:disabled) > * {
   opacity: 1;
 }
 

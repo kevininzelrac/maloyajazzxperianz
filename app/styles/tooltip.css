@@ -1,5 +1,10 @@
+[data-tooltip] {
+  position: relative;
+}
+
 [data-tooltip]::after {
   position: absolute;
+  right: 0;
   content: attr(data-tooltip);
   display: none;
   background: var(--grey);
