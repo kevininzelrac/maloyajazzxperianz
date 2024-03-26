@@ -1,6 +1,6 @@
-import { Post, Role, User } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 
-const usePriviledges = (user: { id: User["id"]; role: Role } | null) => {
+const usePriviledges = (user: { id: User["id"]; role: string } | null) => {
   return {
     isAdmin: Boolean(user?.role === "ADMIN"),
     isEditor: Boolean(user?.role === "EDITOR"),
