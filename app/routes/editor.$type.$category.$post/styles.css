@@ -20,6 +20,7 @@ main {
         margin: 0 auto;
         display: flex;
         gap: var(--gap);
+        flex-wrap: wrap;
 
         & > div {
           position: relative;
