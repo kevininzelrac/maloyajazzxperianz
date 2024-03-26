@@ -1,21 +1,20 @@
-import { Prisma } from "@prisma/client";
-import { SerializeFrom } from "@remix-run/node";
+import { User } from "@prisma/client";
 
 export default function Badge({
   author,
-}: SerializeFrom<
-  Prisma.PostGetPayload<{
-    select: {
-      author: { select: { firstname: true; lastname: true; avatar: true } };
-    };
-  }>
->) {
+}: {
+  author: {
+    firstname: User["firstname"];
+    lastname?: User["lastname"];
+    avatar?: User["avatar"];
+  };
+}) {
   return (
     <div className="badge">
-      <img src={author?.avatar} width={30} height={30} />
+      <img src={author.avatar} width={30} height={30} />
       <div>
-        <strong>{author?.firstname}</strong>
-        <small>{author?.lastname}</small>
+        <strong>{author.firstname}</strong>
+        {author.lastname && <small>{author.lastname}</small>}
       </div>
     </div>
   );
