@@ -1,23 +1,28 @@
-import { NavLink } from "@remix-run/react";
+import { LuLogOut } from "react-icons/lu";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdDashboardCustomize } from "react-icons/md";
 
-export default function Menu({ handleClick }: { handleClick?: () => void }) {
+import usePriviledges from "~/hooks/usePriviledges";
+import Button from "../button";
+import Add from "../tools/add";
+
+export default function Menu({ user }: { user: { id: string; role: string } }) {
+  const { isAdmin, isEditor } = usePriviledges(user);
+
   return (
     <nav className="menu">
-      <NavLink to="Dashboard" prefetch="intent" onClick={handleClick}>
-        Dashboard
-      </NavLink>
-      <NavLink to="Settings" prefetch="intent" onClick={handleClick}>
-        Settings
-      </NavLink>
-      <NavLink to="editor" prefetch="intent" onClick={handleClick}>
-        Editor
-      </NavLink>
-      <NavLink to="editor2" prefetch="intent" onClick={handleClick}>
-        Editor2
-      </NavLink>
-      <NavLink to="signout" prefetch="intent" onClick={handleClick}>
-        Sign Out
-      </NavLink>
+      {(isAdmin || isEditor) && <Add type="page" />}
+      {(isAdmin || isEditor) && (
+        <Button to="Dashboard">
+          <MdDashboardCustomize />
+        </Button>
+      )}
+      <Button to="Settings">
+        <IoSettingsOutline />
+      </Button>
+      <Button to="SignOut">
+        <LuLogOut />
+      </Button>
     </nav>
   );
 }
