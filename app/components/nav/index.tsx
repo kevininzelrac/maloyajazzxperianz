@@ -1,15 +1,13 @@
-import { User } from "@prisma/client";
+//import { User } from "@prisma/client";
 import { NavLink } from "@remix-run/react";
-import { LogoSmall } from "~/svg";
-import Account from "../account";
+import { SerializeFrom } from "@remix-run/node";
+import loader from "../../loader";
 
 export default function Nav({
-  user,
-  data,
+  pages,
   handleClick,
 }: {
-  user: any;
-  data: any;
+  pages: SerializeFrom<typeof loader>["pages"]["data"];
   handleClick?: () => void;
 }) {
   return (
@@ -17,7 +15,12 @@ export default function Nav({
       <NavLink to="/" prefetch="intent" onClick={handleClick}>
         home
       </NavLink>
-      <Recursive data={data} id={user?.id} handleClick={handleClick} />
+      {/* <Recursive pages={nav} id={userId} handleClick={handleClick} /> */}
+      {pages?.map(({ title }) => (
+        <NavLink to={title} key={title} prefetch="intent" onClick={handleClick}>
+          {title}
+        </NavLink>
+      ))}
       <NavLink to="shows" prefetch="intent" onClick={handleClick}>
         shows
       </NavLink>
@@ -31,44 +34,44 @@ export default function Nav({
   );
 }
 
-const Recursive = ({
-  data,
-  id,
-  parent = "",
-  handleClick,
-}: {
-  data: any;
-  id: User["id"] | null;
-  parent?: string;
-  handleClick?: () => void;
-}) => {
-  return data?.map(({ title, children }: any) =>
-    children.length > 0 ? (
-      <div key={title}>
-        {id ? (
-          <NavLink
-            to={parent + "/" + title}
-            prefetch="intent"
-            onClick={handleClick}
-          >
-            {title}
-          </NavLink>
-        ) : (
-          <label>{title}</label>
-        )}
-        <div>
-          <Recursive data={children} id={id} parent={parent + "/" + title} />
-        </div>
-      </div>
-    ) : (
-      <NavLink
-        to={parent + "/" + title}
-        key={title}
-        prefetch="intent"
-        onClick={handleClick}
-      >
-        {title}
-      </NavLink>
-    )
-  );
-};
+// const Recursive = ({
+//   pages,
+//   id,
+//   parent = "",
+//   handleClick,
+// }: {
+//   pages: any;
+//   id?: User["id"];
+//   parent?: string;
+//   handleClick?: () => void;
+// }) => {
+//   return pages?.map(({ title, children }: any) =>
+//     children?.length > 0 ? (
+//       <div key={title}>
+//         {id ? (
+//           <NavLink
+//             to={parent + "/" + title}
+//             prefetch="intent"
+//             onClick={handleClick}
+//           >
+//             {title}
+//           </NavLink>
+//         ) : (
+//           <label>{title}</label>
+//         )}
+//         <div>
+//           <Recursive pages={children} id={id} parent={parent + "/" + title} />
+//         </div>
+//       </div>
+//     ) : (
+//       <NavLink
+//         to={parent + "/" + title}
+//         key={title}
+//         prefetch="intent"
+//         onClick={handleClick}
+//       >
+//         {title}
+//       </NavLink>
+//     )
+//   );
+// };
