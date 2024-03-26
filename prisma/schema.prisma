@@ -95,6 +95,7 @@ model Comment {
   content   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  status    Status    @default(DRAFT)
   postId    String    @db.Uuid
   post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   authorId  String    @db.Uuid
@@ -107,10 +108,10 @@ model Like {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  postId    String?    @db.Uuid
-  post      Post?      @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String?   @db.Uuid
+  post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   commentId String?   @db.Uuid
-  comment   Comment?   @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comment   Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   authorId  String    @db.Uuid
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@unique([postId, authorId])
