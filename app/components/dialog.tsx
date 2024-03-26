@@ -4,7 +4,7 @@ export default function Dialog({
   children,
   handleClick,
 }: {
-  children: JSX.Element;
+  children: React.ReactNode;
   handleClick: () => void;
 }) {
   return (
