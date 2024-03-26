@@ -2,25 +2,24 @@ import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 
 export default function ErrorBoundary() {
   const error = useRouteError();
-  console.error(error);
+
   return (
-    <div
-      className="error"
-      style={{
-        width: "100%",
-        background: "ghostwhite",
-        padding: "1rem",
-        color: "crimson",
-      }}
-    >
-      <h2>Woops!</h2>
-      <p>
-        {isRouteErrorResponse(error)
-          ? `${error.status} ${error.statusText}`
-          : error instanceof Error
-          ? error.message
-          : "Unknown Error"}
-      </p>
-    </div>
+    <>
+      {isRouteErrorResponse(error) ? (
+        error.status >= 400 && error.status <= 499 ? (
+          <article data-warning>
+            {error.status} {error.statusText}
+          </article>
+        ) : error.status >= 500 && error.status <= 599 ? (
+          <article data-error>
+            {error.status} {error.statusText}
+          </article>
+        ) : null
+      ) : error instanceof Error ? (
+        <article data-error>{error.message}</article>
+      ) : (
+        <article data-error>Unknown Error</article>
+      )}
+    </>
   );
 }
