@@ -2,22 +2,27 @@ import {
   Links,
   LiveReload,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
 
-import { IconContext } from "react-icons";
+import { MdAccountCircle } from "react-icons/md";
 import { Franklin } from "./svg";
 import backgroundImage from "../public/img/emy05.jpg";
+
 import Header from "./components/header";
+import Nav from "./components/nav";
+import Account from "./components/account";
+import Responsive from "./components/nav/responsive";
 import Footer from "./components/footer";
 
-import links from "./styles/index";
-
 import loader from "./loader";
-export { loader, links };
+import action from "./action";
+import links from "./styles/index";
+export { loader, action, links };
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -45,21 +50,25 @@ function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const { user, nav } = useLoaderData<typeof loader>();
+  const { user, pages } = useLoaderData<typeof loader>();
 
   return (
     <Layout>
-      <IconContext.Provider
-        value={{
-          className: "react-icons",
-        }}
-      >
-        <Header user={user} data={nav} />
-        <Outlet />
-        <Footer />
-        <img src={backgroundImage} className="background-image" />
-        <Franklin className="franklin" />
-      </IconContext.Provider>
+      <Header>
+        <Nav pages={pages.data} />
+        <Responsive user={user} data={pages.data} />
+        {user?.id ? (
+          <Account user={user} />
+        ) : (
+          <NavLink to="signin" prefetch="intent" className="signin">
+            <MdAccountCircle />
+          </NavLink>
+        )}
+      </Header>
+      <Outlet />
+      <Footer />
+      <img src={backgroundImage} className="background-image" />
+      <Franklin className="franklin" />
     </Layout>
   );
 }

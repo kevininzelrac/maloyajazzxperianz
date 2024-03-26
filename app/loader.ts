@@ -1,52 +1,46 @@
 import { LoaderFunctionArgs, json } from "@remix-run/node";
 import withPriviledges from "./middlewares/withPriviledge";
 import auth from "./services/auth.server";
-import db from "./db";
+import prisma from "./services/prisma.server";
+import withTryCatch from "./middlewares/withTryCatch";
 
 const loader = async ({ request }: LoaderFunctionArgs) => {
   const { id, headers } = await auth(request);
 
-  const user = await db.find.user({
-    where: { id },
-    select: { id: true, role: true, avatar: true },
-  });
+  const user = id
+    ? await prisma.user
+        .findUnique({
+          where: { id },
+          select: { id: true, role: true, firstname: true, avatar: true },
+        })
+        .catch(() => null)
+    : null;
 
-  const nav = await db.find.posts({
-    where: withPriviledges(user.data, {
-      NOT: {
-        OR: [{ type: { title: "post" } }, { category: { title: "post" } }],
+  const pages = await withTryCatch(
+    prisma.post.findMany({
+      where: withPriviledges(user, {
+        type: { title: "page" },
+        category: { title: "default" },
+      }),
+      orderBy: { createdAt: "asc" },
+      select: {
+        title: true,
+        type: {
+          select: {
+            title: true,
+          },
+        },
+        category: {
+          select: {
+            title: true,
+          },
+        },
       },
     }),
-    orderBy: { createdAt: "asc" },
-    select: {
-      title: true,
-      type: {
-        select: {
-          title: true,
-        },
-      },
-      category: {
-        select: {
-          title: true,
-        },
-      },
-    },
-  });
-
-  const recursive = (data: any, parent: string) =>
-    data
-      .filter(({ category }: any) => category.title === parent)
-      .map(({ title, type, category }: any) => ({
-        title,
-        type: type.title,
-        category: category.title,
-        children: recursive(data, title),
-      }));
-
-  return json(
-    { id, user: user.data, nav: recursive(nav.data, "default") },
-    { headers }
+    "Failed to load pages."
   );
+
+  return json({ user, pages }, { headers });
 };
 
 export default loader;
