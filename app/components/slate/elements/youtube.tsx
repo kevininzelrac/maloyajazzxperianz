@@ -100,7 +100,7 @@ export default function Youtube({ attributes, children, element }: props) {
           allowFullScreen={false}
           onLoad={() => setIsLoading(false)}
           style={{
-            pointerEvents: pathname.includes("Edit") ? "none" : "auto",
+            pointerEvents: pathname.includes("editor") ? "none" : "auto",
             position: "relative",
             borderRadius: "inherit",
             cursor: "text",
