@@ -92,6 +92,18 @@ body > svg.franklin {
   margin: 0.2rem;
 }
 
+fieldset[data-or] {
+  margin: 0.5rem 0;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid var(--lightGrey);
+
+  & > legend {
+    font-weight: bold;
+    padding: 0 0.5rem;
+  }
+}
+
 small,
 small > * {
   font-size: 0.8rem;

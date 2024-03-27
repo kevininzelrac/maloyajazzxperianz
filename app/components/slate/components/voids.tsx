@@ -4,7 +4,7 @@ import { CustomEditor } from "../slate";
 import { useEffect, useState } from "react";
 import { useFetcher } from "react-router-dom";
 import Icon from "./icon";
-import { MdOutlineDriveFolderUpload } from "react-icons/md";
+// import { MdOutlineDriveFolderUpload } from "react-icons/md";
 
 const isActive = (editor: CustomEditor, type: string) => {
   const [match] = Editor.nodes(editor, {
@@ -152,22 +152,27 @@ const Dialog = ({
           encType="multipart/form-data"
           action="/api/upload"
         >
-          <input type="file" name="file" accept="image/*" />
-          <br />
-          <button type="submit">
-            <MdOutlineDriveFolderUpload />
+          <input type="file" name="file" accept="image/*" required />
+          <button data-primary type="submit">
+            {/* <MdOutlineDriveFolderUpload /> */}
+            Save
           </button>
         </fetcher.Form>
-        or
+        <fieldset data-or>
+          <legend>or</legend>
+        </fieldset>
         <form onSubmit={handleSubmit}>
           <input
             type="url"
-            placeholder="Enter image URL here"
             value={src}
             onChange={(e) => setSrc(e.target.value)}
+            placeholder="Enter image URL here"
+            required
+            style={{ border: "1px solid #ccc" }}
           />
-          <br />
-          <button type="submit">submit</button>
+          <button data-primary type="submit" disabled={!src}>
+            Save
+          </button>
         </form>
       </div>
     </dialog>
