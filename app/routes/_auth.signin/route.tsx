@@ -22,7 +22,9 @@ export default function Signin() {
       {!isIdle ? <span>{fetcher.state}</span> : null}
 
       {fetcher.data?.error && <span data-error>{fetcher.data.error}</span>}
-      <div>or</div>
+      <fieldset data-or>
+        <legend>or</legend>
+      </fieldset>
       <GoogleSign client_id={client_id} />
     </>
   );
